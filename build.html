@@ -1,0 +1,2853 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <!-- Polymer components -->
+    <script src="bower_components/platform/platform.js"></script>
+    <div hidden><!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<link href="//fonts.googleapis.com/css?family=RobotoDraft:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en" rel="stylesheet" type="text/css">
+</div>
+    <div hidden><!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+`paper-tabs` is a `core-selector` styled to look like tabs. Tabs make it easy to 
+explore and switch between different views or functional aspects of an app, or 
+to browse categorized data sets.
+
+Use `selected` property to get or set the selected tab.
+
+Example:
+
+    <paper-tabs selected="0">
+      <paper-tab>TAB 1</paper-tab>
+      <paper-tab>TAB 2</paper-tab>
+      <paper-tab>TAB 3</paper-tab>
+    </paper-tabs>
+
+See <a href="#paper-tab">paper-tab</a> for more information about 
+`paper-tab`.
+
+Styling tabs:
+
+To change the sliding bar color:
+
+    paper-tabs.pink::shadow #selectionBar {
+      background-color: #ff4081;
+    }
+
+@group Paper Elements
+@element paper-tabs
+@extends core-selector
+@homepage github.io
+-->
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+@group Polymer Core Elements
+
+`<core-selector>` is used to manage a list of elements that can be selected.
+
+The attribute `selected` indicates which item element is being selected.
+The attribute `multi` indicates if multiple items can be selected at once.
+Tapping on the item element would fire `core-activate` event. Use
+`core-select` event to listen for selection changes.
+
+Example:
+
+    <core-selector selected="0">
+      <div>Item 1</div>
+      <div>Item 2</div>
+      <div>Item 3</div>
+    </core-selector>
+
+`<core-selector>` is not styled. Use the `core-selected` CSS class to style the selected element.
+
+    <style>
+      .item.core-selected {
+        background: #eee;
+      }
+    </style>
+    ...
+    <core-selector>
+      <div class="item">Item 1</div>
+      <div class="item">Item 2</div>
+      <div class="item">Item 3</div>
+    </core-selector>
+
+@element core-selector
+@status stable
+@homepage github.io
+-->
+
+<!--
+Fired when an item's selection state is changed. This event is fired both
+when an item is selected or deselected. The `isSelected` detail property
+contains the selection state.
+
+@event core-select
+@param {Object} detail
+  @param {boolean} detail.isSelected true for selection and false for deselection
+  @param {Object} detail.item the item element
+-->
+<!--
+Fired when an item element is tapped.
+
+@event core-activate
+@param {Object} detail
+  @param {Object} detail.item the item element
+-->
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<style shim-shadowdom="">
+/*******************************
+          Flex Layout
+*******************************/
+
+html /deep/ [layout][horizontal], html /deep/ [layout][vertical] {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+}
+
+html /deep/ [layout][horizontal][inline], html /deep/ [layout][vertical][inline] {
+  display: -ms-inline-flexbox;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+}
+
+html /deep/ [layout][horizontal] {
+  -ms-flex-direction: row;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+}
+
+html /deep/ [layout][horizontal][reverse] {
+  -ms-flex-direction: row-reverse;
+  -webkit-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+}
+
+html /deep/ [layout][vertical] {
+  -ms-flex-direction: column;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+html /deep/ [layout][vertical][reverse] {
+  -ms-flex-direction: column-reverse;
+  -webkit-flex-direction: column-reverse;
+  flex-direction: column-reverse;
+}
+
+html /deep/ [layout][wrap] {
+  -ms-flex-wrap: wrap;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+html /deep/ [layout][wrap-reverse] {
+  -ms-flex-wrap: wrap-reverse;
+  -webkit-flex-wrap: wrap-reverse;
+  flex-wrap: wrap-reverse;
+}
+
+html /deep/ [flex] {
+  -ms-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+html /deep/ [flex][auto] {
+  -ms-flex: 1 1 auto;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+html /deep/ [flex][none] {
+  -ms-flex: none;
+  -webkit-flex: none;
+  flex: none;
+}
+
+html /deep/ [flex][one] {
+  -ms-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+
+html /deep/ [flex][two] {
+  -ms-flex: 2;
+  -webkit-flex: 2;
+  flex: 2;
+}
+
+html /deep/ [flex][three] {
+  -ms-flex: 3;
+  -webkit-flex: 3;
+  flex: 3;
+}
+
+html /deep/ [flex][four] {
+  -ms-flex: 4;
+  -webkit-flex: 4;
+  flex: 4;
+}
+
+html /deep/ [flex][five] {
+  -ms-flex: 5;
+  -webkit-flex: 5;
+  flex: 5;
+}
+
+html /deep/ [flex][six] {
+  -ms-flex: 6;
+  -webkit-flex: 6;
+  flex: 6;
+}
+
+html /deep/ [flex][seven] {
+  -ms-flex: 7;
+  -webkit-flex: 7;
+  flex: 7;
+}
+
+html /deep/ [flex][eight] {
+  -ms-flex: 8;
+  -webkit-flex: 8;
+  flex: 8;
+}
+
+html /deep/ [flex][nine] {
+  -ms-flex: 9;
+  -webkit-flex: 9;
+  flex: 9;
+}
+
+html /deep/ [flex][ten] {
+  -ms-flex: 10;
+  -webkit-flex: 10;
+  flex: 10;
+}
+
+html /deep/ [flex][eleven] {
+  -ms-flex: 11;
+  -webkit-flex: 11;
+  flex: 11;
+}
+
+html /deep/ [flex][twelve] {
+  -ms-flex: 12;
+  -webkit-flex: 12;
+  flex: 12;
+}
+
+/* alignment in cross axis */
+
+html /deep/ [layout][start] {
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+
+html /deep/ [layout][center], html /deep/ [layout][center-center] {
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+html /deep/ [layout][end] {
+  -ms-flex-align: end;
+  -webkit-align-items: flex-end;
+  align-items: flex-end;
+}
+
+/* alignment in main axis */
+
+html /deep/ [layout][start-justified] {
+  -ms-flex-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+}
+
+html /deep/ [layout][center-justified], html /deep/ [layout][center-center] {
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+html /deep/ [layout][end-justified] {
+  -ms-flex-pack: end;
+  -webkit-justify-content: flex-end;
+  justify-content: flex-end;
+}
+
+html /deep/ [layout][around-justified] {
+  -ms-flex-pack: around;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+}
+
+html /deep/ [layout][justified] {
+  -ms-flex-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+/* self alignment */
+
+html /deep/ [self-start] {
+  -ms-align-self: flex-start;
+  -webkit-align-self: flex-start;
+  align-self: flex-start;
+}
+
+html /deep/ [self-center] {
+  -ms-align-self: center;
+  -webkit-align-self: center;
+  align-self: center;
+}
+
+html /deep/ [self-end] {
+  -ms-align-self: flex-end;
+  -webkit-align-self: flex-end;
+  align-self: flex-end;
+}
+
+html /deep/ [self-stretch] {
+  -ms-align-self: stretch;
+  -webkit-align-self: stretch;
+  align-self: stretch;
+}
+
+/*******************************
+          Other Layout
+*******************************/
+
+html /deep/ [block] {
+  display: block;
+}
+
+/* ie support for hidden */
+html /deep/ [hidden] {
+  display: none !important;
+}
+
+html /deep/ [relative] {
+  position: relative;
+}
+
+html /deep/ [fit] {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+body[fullbleed] {
+  margin: 0;
+  height: 100vh;
+}
+
+/*******************************
+            Other
+*******************************/
+
+html /deep/ [segment], html /deep/ segment {
+  display: block;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 1em 0.5em;
+  padding: 1em;
+  background-color: white;
+  -webkit-box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 0px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 5px 5px 5px 5px;
+}
+
+</style>
+
+<script src="bower_components/polymer/polymer.js"></script>
+<!--<link rel="import" href="../polymer-dev/polymer.html">--> 
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+@group Polymer Core Elements
+
+The `<core-selection>` element is used to manage selection state. It has no
+visual appearance and is typically used in conjunction with another element.
+For example, [core-selector](#core-selector)
+use a `<core-selection>` to manage selection.
+
+To mark an item as selected, call the `select(item)` method on 
+`<core-selection>`. The item itself is an argument to this method.
+
+The `<core-selection>`element manages selection state for any given set of
+items. When an item is selected, the `core-select` event is fired.
+
+The attribute `multi` indicates if multiple items can be selected at once.
+  
+Example:
+ 
+    <polymer-element name="selection-example">
+       <template>
+         <style>
+           polyfill-next-selector { content: ':host > .selected'; }
+           ::content > .selected {
+             font-weight: bold;
+             font-style: italic;
+           }
+         </style>
+         <ul on-tap="{{itemTapAction}}">
+           <content></content>
+         </ul>
+         <core-selection id="selection" multi
+                         on-core-select="{{selectAction}}"></core-selection>
+       </template>
+       <script>
+         Polymer('selection-example', {
+           itemTapAction: function(e, detail, sender) {
+             this.$.selection.select(e.target);
+           },
+           selectAction: function(e, detail, sender) {
+             detail.item.classList.toggle('selected', detail.isSelected);
+           }
+         });
+       </script>
+    </polymer-element>
+
+    <selection-example>
+      <li>Red</li>
+      <li>Green</li>
+      <li>Blue</li>
+    </selection-example>
+ 
+@element core-selection
+-->
+
+<!--
+Fired when an item's selection state is changed. This event is fired both
+when an item is selected or deselected. The `isSelected` detail property
+contains the selection state.
+
+@event core-select
+@param {Object} detail
+  @param {boolean} detail.isSelected true for selection and false for de-selection
+  @param {Object} detail.item the item element
+-->
+
+
+<polymer-element name="core-selection" attributes="multi" hidden assetpath="bower_components/core-selection/">
+  
+</polymer-element>
+
+
+<polymer-element name="core-selector" attributes="selected multi valueattr selectedClass selectedProperty selectedAttribute selectedItem selectedModel selectedIndex notap target itemsSelector activateEvent" assetpath="bower_components/core-selector/">
+
+  <template>
+    <core-selection id="selection" multi="{{multi}}" on-core-select="{{selectionSelect}}"></core-selection>
+    <content id="items" select="*"></content>
+  </template>
+
+  
+</polymer-element>
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+`paper-tab` is styled to look like a tab.  It should be used in conjunction with
+`paper-tabs`.
+
+Example:
+
+    <paper-tabs selected="0">
+      <paper-tab>TAB 1</paper-tab>
+      <paper-tab>TAB 2</paper-tab>
+      <paper-tab>TAB 3</paper-tab>
+    </paper-tabs>
+    
+Styling tab:
+
+To change the ink color:
+
+    .pink paper-tab::shadow #ink {
+      color: #ff4081;
+    }
+
+@group Paper Elements
+@element paper-tab
+@homepage github.io
+-->
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+`paper-ripple` provides a visual effect that other paper elements can
+use to simulate a rippling effect emanating from the point of contact.  The
+effect can be visualized as a concentric circle with motion.
+
+Example:
+
+    <paper-ripple></paper-ripple>
+
+`paper-ripple` listens to "down" and "up" events so it would display ripple
+effect when touches on it.  You can also defeat the default behavior and 
+manually route the down and up actions to the ripple element.  Note that it is
+important if you call downAction() you will have to make sure to call upAction()
+so that `paper-ripple` would end the animation loop.
+
+Example:
+
+    <paper-ripple id="ripple" style="pointer-events: none;"></paper-ripple>
+    ...
+    downAction: function(e) {
+      this.$.ripple.downAction({x: e.x, y: e.y});
+    },
+    upAction: function(e) {
+      this.$.ripple.upAction();
+    }
+
+Styling ripple effect:
+
+  Use CSS color property to style the ripple:
+
+    paper-ripple {
+      color: #4285f4;
+    }
+
+  Note that CSS color property is inherited so it is not required to set it on
+  the `paper-ripple` element directly.
+
+Apply `recenteringTouch` class to make the recentering rippling effect.
+
+    <paper-ripple class="recenteringTouch"></paper-ripple>
+
+Apply `circle` class to make the rippling effect within a circle.
+
+    <paper-ripple class="circle"></paper-ripple>
+
+@group Paper Elements
+@element paper-ripple
+@homepage github.io
+-->
+
+
+
+<polymer-element name="paper-ripple" attributes="initialOpacity opacityDecayVelocity" assetpath="bower_components/paper-ripple/">
+<template>
+
+  <style>
+
+    :host {
+      display: block;
+      position: relative;
+    }
+
+    #canvas {
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    :host(.circle) #canvas {
+      border-radius: 50%;
+    }
+
+  </style>
+
+</template>
+
+</polymer-element>
+
+
+<polymer-element name="paper-tab" attributes="noink" role="tab" assetpath="bower_components/paper-tabs/">
+<template>
+
+  <style>/*
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+
+:host {
+  display: block;
+  position: relative;
+  overflow: hidden;
+}
+
+#tabContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.tab-content {
+  transition: opacity .1s cubic-bezier(0.4, 0.0, 1, 1), color .1s cubic-bezier(0.4, 0.0, 1, 1);
+  cursor: default;
+  pointer-events: none;
+}
+
+:host(:not(.core-selected)) .tab-content {
+  opacity: 0.6;
+}
+
+#ink {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  color: #ffff8d;
+}
+
+:host[noink] #ink {
+  pointer-events: none;
+}
+
+:host-context(paper-tabs[noink]) #ink {
+  pointer-events: none;
+}
+</style>
+  
+  <div id="tabContainer" center-justified="" center="" horizontal="" layout="">
+  
+    <div class="tab-content"><content></content></div>
+    <paper-ripple id="ink" initialopacity="0.95" opacitydecayvelocity="0.98"></paper-ripple>
+    
+  </div>
+  
+</template>
+
+</polymer-element>
+
+
+<polymer-element name="paper-tabs" extends="core-selector" attributes="noink nobar" role="tablist" assetpath="bower_components/paper-tabs/">
+<template>
+
+  <style>/*
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+
+:host {
+  display: block;
+  position: relative;
+  font-size: 14px;
+  font-weight: 500;
+  height: 48px;
+  overflow: hidden;
+}
+
+#tabsContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  white-space: nowrap;
+}
+
+#selectionBar {
+  position: absolute;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  background-color: #ffff8d;
+  transition: width, left;
+}
+
+#selectionBar[hidden] {
+  display: hidden;
+}
+
+#selectionBar.expand {
+  transition-duration: 0.15s;
+  transition-timing-function: cubic-bezier(0.4, 0.0, 1, 1);
+}
+
+#selectionBar.contract {
+  transition-duration: 0.1s;
+  transition-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+polyfill-next-selector { content: '#tabsContainer > *:not(#selectionBar)'; }
+::content > * {
+  -ms-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+}
+</style>
+  
+  <div id="tabsContainer" horizontal="" layout="">
+  
+    <shadow></shadow>
+    <div id="selectionBar" hidden?="{{nobar}}" on-transitionend="{{barTransitionEnd}}"></div>
+    
+  </div>
+    
+</template>
+
+</polymer-element>
+</div>
+    <div hidden><!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+`core-pages` is used to select one of its children to show. One use is to cycle through a list of children "pages".
+
+Example: 
+
+    <core-pages selected="0">
+      <div>One</div>
+      <div>Two</div>
+      <div>Three</div>
+    </core-pages>
+
+    <script>
+      document.addEventListener('click', function(e) {
+        var pages = document.querySelector('core-pages');
+        pages.selected = (pages.selected + 1) % pages.children.length;
+      });
+    </script>
+
+@group Polymer Core Elements
+@class core-pages
+@extends core-selector
+-->
+
+
+
+
+<polymer-element name="core-pages" extends="core-selector" selected="0" notap="" assetpath="bower_components/core-pages/">
+<template>
+
+  <style>/*
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+
+:host {
+  display: block;
+  position: relative;
+}
+
+polyfill-next-selector { content: ':host > *'; }
+::content > * {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  visibility: hidden;
+  z-index: -1000;
+}
+
+polyfill-next-selector { content: ':host > .core-selected'; }
+::content > .core-selected {
+  visibility: visible;
+  z-index: auto;
+}</style>
+
+  <shadow></shadow>
+
+</template>
+</polymer-element>
+</div>
+    <div hidden><!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+`paper-toast` provides lightweight feedback about an operation in a small popup 
+at the base of the screen on mobile and at the lower left on desktop. Toasts are 
+above all other elements on screen, including the FAB.
+
+Toasts automatically disappear after a timeout or after user interaction 
+elsewhere on the screen, whichever comes first. Toasts can be swiped off 
+screen.  There can be only one on the screen at a time.
+
+Example:
+
+    <paper-toast text="Your draft has been discarded." onclick="discardDraft(el)"></paper-toast>
+    
+    <script>
+      function discardDraft(el) {
+        el.show();
+      }
+    </script>
+    
+An action button can be presented in the toast.
+
+Example (using Polymer's data-binding features):
+
+    <paper-toast id="toast2" text="Connection timed out. Showing limited messages.">
+      <div style="color: blue;" on-tap="{{retry}}">Retry</div>
+    </paper-toast>
+    
+Positioning toast:
+
+A standard toast appears near the lower left of the screen.  You can change the
+position by overriding bottom and left positions.
+
+    paper-toast {
+      bottom: 40px;
+      left: 10px;
+    }
+  
+To make it fit at the bottom of the screen:
+
+    paper-toast {
+      bottom: 0;
+      left: 0;
+      width: 100%;
+    }
+  
+When the screen size is smaller than the `responsiveWidth` (default to 480px),
+the toast will automatically fits at the bottom of the screen.
+
+@group Paper Elements
+@element paper-toast
+@homepage github.io
+-->
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+
+`<core-transition>` is an abstraction of an animation. It is used to implement pluggable
+transitions, for example in `<core-overlay>`. You can extend this class to create a custom
+animation, instantiate it, and import it where you need the animation.
+
+All instances of `<core-transition>` are stored in a single database with `type=transition`.
+For more about the database, please see the documentation for `<core-meta>`.
+
+Each instance of `<core-transition>` objects are shared across all the clients, so you should
+not store state information specific to the animated element in the transition. Rather, store
+it on the element.
+
+Example:
+
+my-transition.html:
+
+    <polymer-element name="my-transition" extends="core-transition">
+        <script>
+            go: function(node) {
+                node.style.transition = 'opacity 1s ease-out';
+                node.style.opacity = 0;
+            }
+        </script>
+    </polymer-element>
+
+    <my-transition id="my-fade-out"></my-transition>
+
+my-transition-demo.html:
+
+    <link href="components/core-meta/core-meta.html" rel="import">
+    <link href="my-transition.html" rel="import">
+
+    <div id="animate-me"></div>
+
+    <script>
+        // Get the core-transition
+        var meta = document.createElement('core-meta');
+        meta.type = 'transition';
+        var transition = meta.byId('my-fade-out');
+
+        // Run the animation
+        var animated = document.getElementById('animate-me');
+        transition.go(animated);
+    </script>
+
+@group Polymer Core Elements
+@element core-transition
+@extends core-meta
+@status beta
+@homepage github.io
+-->
+<!--
+Fired when the animation finishes.
+
+@event core-transitionend
+@param {Object} detail
+@param {Object} detail.node The animated node
+-->
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+`core-meta` provides a method of constructing a self-organizing database.
+It is useful to collate element meta-data for things like catalogs and for 
+designer.
+
+Example, an element folder has a `metadata.html` file in it, that contains a 
+`core-meta`, something like this:
+
+    <core-meta id="my-element" label="My Element">
+      <property name="color" value="blue"></property>
+    </core-meta>
+
+An application can import as many of these files as it wants, and then use 
+`core-meta` again to access the collected data.
+
+    <script>
+      var meta = document.createElement('core-meta');
+      console.log(meta.list); // dump a list of all meta-data elements that have been created
+    </script>
+
+Use `byId(id)` to retrive a specific core-meta.
+
+    <script>
+      var meta = document.createElement('core-meta');
+      console.log(meta.byId('my-element'));
+    </script>
+
+By default all meta-data are stored in a single databse.  If your meta-data 
+have different types and want them to be stored separately, use `type` to 
+differentiate them.
+
+Example:
+
+    <core-meta id="x-foo" type="xElt"></core-meta>
+    <core-meta id="x-bar" type="xElt"></core-meta>
+    <core-meta id="y-bar" type="yElt"></core-meta>
+
+    <script>
+      var meta = document.createElement('core-meta');
+      meta.type = 'xElt';
+      console.log(meta.list);
+    </script>
+
+@group Polymer Core Elements
+@element core-meta
+@homepage github.io
+-->
+
+
+
+<polymer-element name="core-meta" attributes="label type" hidden assetpath="bower_components/core-meta/">
+
+</polymer-element>
+
+
+<polymer-element name="core-transition" extends="core-meta" assetpath="bower_components/core-transition/">
+  
+  
+</polymer-element>
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+
+
+<polymer-element name="core-key-helper" assetpath="bower_components/core-overlay/">
+  
+</polymer-element>
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<polymer-element name="core-overlay-layer" assetpath="bower_components/core-overlay/">
+<template>
+  <style>
+    :host {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      display: none;
+    }
+
+    :host(.core-opened) {
+      display: block;
+    }
+  </style>
+  <content></content>
+</template>
+
+</polymer-element>
+
+
+<!--
+The `core-overlay` element displays overlayed on top of other content. It starts
+out hidden and is displayed by setting its `opened` property to true.
+A `core-overlay's` opened state can be toggled by calling the `toggle`
+method.
+
+The `core-overlay` will, by default, show/hide itself when it's opened. The 
+`target` property may be set to another element to cause that element to 
+be shown when the overlay is opened.
+
+It's common to want a `core-overlay` to animate to its opened
+position. The `core-overlay` element uses a `core-transition` to handle
+animation. The default transition is `core-transition-fade` which 
+causes the overlay to fade in when displayed. See 
+<a href="../core-transition/">`core-transition`</a> for more
+information about customizing a `core-overlay's` opening animation. The
+`backdrop` property can be set to true to show a backdrop behind the overlay
+that will darken the rest of the window.
+
+An element that should close the `core-overlay` will automatically
+do so if it's given the `core-overlay-toggle` attribute. This attribute
+can be customized with the `closeAttribute` property. You can also use
+`closeSelector` if more general matching is needed.
+
+By default  `core-overlay` will close whenever the user taps outside it or
+presses the escape key. This behavior can be turned off via the
+`autoCloseDisabled` property.
+
+    <core-overlay>
+      <h2>Dialog</h2>
+      <input placeholder="say something..." autofocus>
+      <div>I agree with this wholeheartedly.</div>
+      <button core-overlay-toggle>OK</button>
+    </core-overlay>
+
+`core-overlay` will automatically size and position itself according to the 
+following rules. If the target's style.top and style.left are unset, the 
+target will be centered. The size of the target is constrained to be no larger
+than the window dimensions. The `margin` property specifies the extra amount
+of space that should be reserved around the overlay. This can be used to ensure
+that, for example, a drop shadow is always visible around the overlay.
+
+@group Core Elements
+@element core-overlay
+@homepage github.io
+-->
+<!--
+Fired when the `core-overlay`'s `opened` property changes.
+
+@event core-overlay-open
+@param {Object} detail
+@param {Object} detail.opened the opened state
+-->
+
+<style>
+  .core-overlay-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .core-overlay-backdrop.core-opened {
+    opacity: 0.6;
+  }
+</style>
+
+<polymer-element name="core-overlay" assetpath="bower_components/core-overlay/">
+
+</polymer-element>
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+
+`<core-transition-css>` implements CSS transitions as `<core-transition>` objects so they can be
+reused in a pluggable transition system such as in `<core-overlay>`. Currently this class has
+some specific support to animate an element from and to the viewport such as a dialog, but you
+can override it for different effects.
+
+Example:
+
+my-css-transition.html:
+
+    <polymer-element name="my-css-transition" extends="core-transition-css">
+    <template>
+        <style>
+            :host(.my-transition) {
+                opacity: 0;
+                transition: transform 1s ease-out, opacity 1s ease-out;
+            }
+            :host(.my-transition.my-opened) {
+                opacity: 1;
+                transform: none;
+            }
+            :host(.my-transition-top) {
+                transform: translateY(-100vh);
+            }
+            :host(.my-transition-bottom) {
+                transform: translateY(100vh);
+            }
+        </style>
+    </template>
+    <script>
+      Polymer({
+        baseClass: 'my-transition',
+        openedClass: 'my-opened'
+      });
+    </script>
+    </polymer-element>
+
+    <my-css-transition id="my-transition-top" transitionType="top"></my-css-transition>
+    <my-css-transition id="my-transition-bottom" transitionType="bottom"></my-css-transition>
+
+my-css-transition-demo.html
+
+    <link href="components/core-meta/core-meta.html" rel="import">
+    <link href="my-css-transition.html">
+
+    <div id="animate-me"></div>
+
+    <script>
+        // Get the core-transition
+        var meta = document.createElement('core-meta');
+        meta.type = 'transition';
+        var transition1 = meta.byId('my-transition-top');
+
+        // Set up the animation
+        var animated = document.getElementById('animate-me');
+        transition1.setup(animated);
+        transition1.go(animated, {opened: true});
+    </script>
+
+The first element in the template of a `<core-transition-css>` object should be a stylesheet. It
+will be injected to the scope of the animated node in the `setup` function. The node is initially
+invisible with `opacity: 0`, and you can transition it to an "opened" state by passing
+`{opened: true}` to the `go` function.
+
+All nodes being animated will get the class `my-transition` added in the `setup` function.
+Additionally, the class `my-transition-<transitionType>` will be applied. You can use the
+`transitionType` attribute to implement several different behaviors with the same
+`<core-transition-css>` object. In the above example, `<my-css-transition>` implements both
+sliding the node from the top of the viewport and from the bottom of the viewport.
+
+Available transitions
+---------------------
+
+`<core-transition-css>` includes several commonly used transitions.
+
+`core-transition-fade`: Animates from `opacity: 0` to `opacity: 1` when it opens.
+
+`core-transition-center`: Zooms the node into the final size.
+
+`core-transition-top`: Slides the node into the final position from the top.
+
+`core-transition-bottom`: Slides the node into the final position from the bottom.
+
+`core-transition-left`: Slides the node into the final position from the left.
+
+`core-transition-right`: Slides the node into the final position from the right.
+
+@group Polymer Core Elements
+@element core-transition-css
+@extends core-transition
+@status beta
+@homepage github.io
+-->
+
+
+
+<polymer-element name="core-transition-css" extends="core-transition" attributes="transitionType" assetpath="bower_components/core-transition/">
+<template>
+  <style no-shim="">/* Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt */
+
+:host(.core-transition) {
+  outline: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in;
+  -webkit-transition: -webkit-transform 0.2s ease-in-out, opacity 0.2s ease-in;
+}
+
+
+:host(.core-transition.core-opened) {
+  opacity: 1;
+  transform: none;
+  -webkit-transform: none;
+}
+
+:host(.core-transition-center) {
+  transform: scale(0.5);
+  -webkit-transform: scale(0.5);
+}
+
+:host(.core-transition-top) {
+  transform: translateY(-200%);
+  -webkit-transform: translateY(-200%);
+}
+
+:host(.core-transition-bottom) {
+  transform: translateY(200%);
+  -webkit-transform: translateY(200%);
+}
+
+:host(.core-transition-left) {
+  transform: translateX(-200%);
+  -webkit-transform: translateX(-200%);
+}
+
+:host(.core-transition-right) {
+  transform: translateX(200%);
+  -webkit-transform: translateX(200%);
+}</style>
+</template>
+
+</polymer-element>
+
+<core-transition-css id="core-transition-fade"></core-transition-css>
+<core-transition-css id="core-transition-center" transitiontype="center"></core-transition-css>
+<core-transition-css id="core-transition-top" transitiontype="top"></core-transition-css>
+<core-transition-css id="core-transition-bottom" transitiontype="bottom"></core-transition-css>
+<core-transition-css id="core-transition-left" transitiontype="left"></core-transition-css>
+<core-transition-css id="core-transition-right" transitiontype="right"></core-transition-css>
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+/**
+ * @group Polymer Core Elements
+ * @element core-media-query
+ * @status beta
+ * @homepage github.io
+ *
+ * core-media-query can be used to data bind to a CSS media query.
+ * The "query" property is a bare CSS media query.
+ * The "queryMatches" property will be a boolean representing if the page matches that media query.
+ *
+ * core-media-query uses media query listeners to dynamically update the "queryMatches" property.
+ * A "core-media-change" event also fires when queryMatches changes.
+ *
+ * Example:
+ *
+ *      <core-media-query query="max-width: 640px" queryMatches="{{phoneScreen}}"></core-media-query>
+ *
+ */
+
+ /**
+  * Fired when the media query state changes
+  *
+  * @event core-media-change
+  */
+-->
+
+
+<polymer-element name="core-media-query" attributes="query queryMatches" assetpath="bower_components/core-media-query/">
+  <template>
+    <style>
+      :host {
+        display: none;
+      }
+    </style>
+  </template>
+  
+</polymer-element>
+
+
+<polymer-element name="paper-toast" attributes="text duration opened responsiveWidth swipeDisabled" role="status" assetpath="bower_components/paper-toast/">
+
+<template>
+
+  <style>/*
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+
+:host {
+  display: inline-block;
+  background: #323232;
+  color: #f1f1f1;
+  min-height: 48px;
+  min-width: 288px;
+  padding: 16px 24px 12px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  border-radius: 2px;
+  bottom: 12px;
+  left: 12px;
+  font-size: 14px;
+  cursor: default;
+}
+
+:host(.capsule) {
+  border-radius: 24px;
+}
+
+:host(.fit-bottom) {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  min-width: 0;
+  border-radius: 0;
+}
+
+:host(.core-transition.dragging) {
+  transition: none;
+}
+
+:host(.core-transition.fade-out-down),
+:host(.core-transition.fade-out-up),
+:host(.core-transition.fade-out-right),
+:host(.core-transition.fade-out-left) {
+  opacity: 0;
+  transition: -webkit-transform 0.08s ease-in-out, opacity 0.08s ease-in-out;
+  transition: transform 0.08s ease-in-out, opacity 0.08s ease-in-out;
+}
+
+:host(.core-transition.fade-out-down) {
+  -webkit-transform: translate(0, 100%);
+  transform: translate(0, 100%);
+}
+
+:host(.core-transition.fade-out-up) {
+  -webkit-transform: translate(0, -100%);
+  transform: translate(0, -100%);
+}
+
+:host(.core-transition.fade-out-right) {
+  -webkit-transform: translate(100%, 0);
+  transform: translate(100%, 0);
+}
+
+:host(.core-transition.fade-out-left) {
+  -webkit-transform: translate(-100%, 0);
+  transform: translate(-100%, 0);
+}
+
+.toast-container {
+  overflow: hidden;
+}
+
+.toast-action {
+  padding-left: 24px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+</style>
+
+  <core-overlay opened="{{opened}}" target="{{}}" sizingtarget="{{$.container}}" transition="core-transition-bottom"></core-overlay>
+
+  <div class="toast-container" horizontal="" layout="">
+
+    <div class="toast-text" flex="">{{text}}</div>
+    
+    <div class="toast-text toast-action" on-tap="{{dismiss}}">
+      <content></content>
+    </div>
+
+  </div>
+  
+  <core-media-query query="max-width: {{responsiveWidth}}" querymatches="{{narrowMode}}"></core-media-query>
+
+</template>
+
+</polymer-element>
+</div>
+    <div hidden>
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+`paper-slider` allows user to select a value from a range of values by
+moving the slider thumb.  The interactive nature of the slider makes it a 
+great choice for settings that reflect intensity levels, such as volume, 
+brightness, or color saturation.
+
+Example:
+
+    <paper-slider></paper-slider>
+
+Use `min` and `max` to specify the slider range.  Default is 0 to 100.
+
+Example:
+
+    <paper-slider min="10" max="200" value="110"></paper-slider>
+
+Styling slider:
+
+To change the slider progress bar color:
+
+    paper-slider::shadow #sliderBar::shadow #activeProgress {
+      background-color: #0f9d58;
+    }
+
+To change the slider knob color:
+
+    paper-slider::shadow #sliderKnobInner {
+      background-color: #0f9d58;
+    }
+
+To change the slider pin color:
+
+    paper-slider::shadow #sliderKnobInner::before {
+      background-color: #0f9d58;
+    }
+
+To change the slider pin's value:
+
+    paper-slider::shadow #sliderKnobInner::after {
+      color: #0f9d58
+    }
+
+To change the slider secondary progress bar color:
+
+    paper-slider::shadow #sliderBar::shadow #secondaryProgress {
+      background-color: #0f9d58;
+    }
+
+@group Paper Elements
+@element paper-slider
+@extends core-range
+@homepage github.io
+-->
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+The progress bars are for situations where the percentage completed can be 
+determined. They give users a quick sense of how much longer an operation 
+will take.
+
+Example:
+
+    <paper-progress value="10"></paper-progress>
+    
+There is also a secondary progress which is useful for displaying intermediate 
+progress, such as the buffer level during a streaming playback progress bar.
+
+Example:
+
+    <paper-progress value="10" secondaryProgesss="30"></paper-progress>
+
+Styling progress bar:
+
+To change the active progress bar color:
+
+    paper-progress::shadow #activeProgress {
+      background-color: #e91e63;
+    }
+
+To change the secondary progress bar color:
+
+    paper-progress::shadow #secondaryProgress {
+      background-color: #f8bbd0;
+    }
+    
+To change the progress bar background color:
+
+    paper-progress::shadow #progressContainer {
+      background-color: #64ffda;
+    }
+
+@group Paper Elements
+@element paper-progress
+@extends core-range
+@homepage github.io
+-->
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+The `core-range` element is used for managing a numeric value within a given 
+range.  It has no visual appearance and is typically used in conjunction with 
+another element.
+
+One can build a progress bar using `core-range` like this:
+
+    <core-range min="0" max="200" value="100" ratio="{{ratio}}"></core-range>
+    <div class="progress-bar" style="width: {{ratio}}%;"></div>
+
+@group Polymer Core Elements
+@element core-range
+@homepage github.io
+
+-->
+
+
+
+<polymer-element name="core-range" attributes="value min max step ratio" assetpath="bower_components/core-range/">
+
+</polymer-element>
+
+
+<polymer-element name="paper-progress" extends="core-range" attributes="secondaryProgress" assetpath="bower_components/paper-progress/">
+
+  <template>
+  
+    <style>/*
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+
+:host {
+  display: inline-block;
+  width: 200px;
+  height: 4px;
+}
+
+#progressContainer {
+  position: relative;
+  height: 100%;
+  background-color: #c8c8c8;
+}
+
+#activeProgress, #secondaryProgress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+#activeProgress {
+  background-color: #0f9d58;
+}
+
+#secondaryProgress {
+  background-color: #87ceac;
+}</style>
+  
+    <div id="progressContainer" role="progressbar" aria-valuenow="{{value}}" aria-valuemin="{{min}}" aria-valuemax="{{max}}">
+    
+      <div id="secondaryProgress" style="width: {{secondaryRatio}}%;"></div>
+      <div id="activeProgress" style="width: {{ratio}}%;"></div>
+      
+    </div>
+    
+  </template>
+  
+  
+  
+</polymer-element>
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE
+The complete set of authors may be found at http://polymer.github.io/AUTHORS
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS
+-->
+
+<!--
+`paper-input` is a single- or multi-line text field where user can enter input.
+It can optionally have a label.
+
+Example:
+
+    <paper-input label="Your Name"></paper-input>
+    <paper-input multiline label="Enter multiple lines here"></paper-input>
+
+Theming
+--------
+
+Set `CoreStyle.g.paperInput.focusedColor` and `CoreStyle.g.paperInput.invalidColor` to theme
+the focused and invalid states.
+
+@group Paper Elements
+@element paper-input
+@extends core-input
+@homepage github.io
+-->
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE
+The complete set of authors may be found at http://polymer.github.io/AUTHORS
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS
+-->
+
+<!--
+/**
+ * core-input is an unstyled single- or multi-line text field where user can
+ * enter input.
+ *
+ * Example:
+ *
+ *     <core-input placeholder="Placeholder text here"></core-input>
+ *
+ *     <core-input multiline placeholder="Enter multiple lines here"></core-input>
+ *
+ * The text input's value is considered "committed" if the user hits the "enter"
+ * key or blurs the input after changing the value. The `change` event is fired
+ * when the value becomes committed, and the committed value is stored in the
+ * `value` property. The current value of the input is stored in the `inputValue`
+ * property.
+ *
+ * Validation
+ * ----------
+ *
+ * core-input can optionally validate the value using the HTML5 constraints API,
+ * similar to native inputs. There are two methods to enable input validation:
+ *
+ * 1. By setting the `type` attribute. For example, setting it to `email` will
+ *    check the value is a valid email, and setting it to `number` will check
+ *    the input is a number.
+ *
+ * 2. By setting attributes related to validation. The attributes are `pattern`,
+ *    `min`, `max`, `step` and `required`.
+ *
+ * Only `required` is supported for multiline inputs currently.
+ *
+ * Example:
+ *
+ *     <core-input type="email" placeholder="enter your email"></core-input>
+ *
+ *     <core-input type="number" min="5" placeholder="enter a number greater than or equal to 5"></core-input>
+ *
+ *     <core-input pattern=".*abc.*" placeholder="enter something containing 'abc'"></core-input>
+ *
+ * See https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/Constraint_validation
+ * for more info on validation.
+ *
+ * @group Polymer Core Elements
+ * @element core-input
+ * @homepage github.io
+ */
+-->
+
+<!--
+Fired when the inputValue of is changed. This is the same event as the DOM
+"input" event.
+
+@event input
+-->
+
+<!--
+Fired when the user commits the value of the input, either by the hitting the
+`enter` key or blurring the input after the changing the inputValue. Also see the
+DOM "change" event.
+
+@event change
+-->
+
+<!--
+Fired when the inputValue of this text input changes and fails validation.
+
+@event input-invalid
+@param {Object} detail
+@param {string} value The text input's inputValue.
+-->
+
+<!--
+Fired when the inputValue of this text input changes and passes validation.
+
+@event input-valid
+@param {Object} detail
+@param {string} value The text input's inputValue.
+-->
+
+
+<polymer-element name="core-input" on-focus="{{focusAction}}" assetpath="bower_components/core-input/">
+
+  <template>
+
+    <style>:host {
+  display: inline-block;
+  text-align: inherit;
+  color: #ccc;
+  position: relative;
+  width: 20em;
+}
+
+:host:hover {
+  cursor: text;
+}
+
+input,
+textarea {
+  font: inherit;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+textarea {
+  resize: none;
+}
+
+textarea[fit] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}</style>
+
+    <template if="{{multiline}}">
+      <textarea id="input" value="{{inputValue}}" rows="{{rows}}" fit?="{{rows === &apos;fit&apos;}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" autofocus?="{{autofocus}}" required?="{{required}}" readonly?="{{readonly}}" aria-label="{{label || placeholder}}" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{inputFocusAction}}" on-blur="{{inputBlurAction}}"></textarea>
+    </template>
+
+    <template if="{{!multiline}}">
+      <input id="input" value="{{inputValue}}" disabled?="{{disabled}}" type="{{type}}" placeholder="{{placeholder}}" autofocus?="{{autofocus}}" required?="{{required}}" readonly?="{{readonly}}" pattern="{{pattern}}" min="{{min}}" max="{{max}}" step="{{step}}" maxlength="{{maxlength}}" aria-label="{{label || placeholder}}" aria-invalid="{{invalid}}" on-keydown="{{keydownAction}}" on-change="{{inputChangeAction}}" on-focus="{{inputFocusAction}}" on-blur="{{inputBlurAction}}">
+    </template>
+
+  </template>
+
+  
+
+</polymer-element>
+
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<!--
+
+The `core-style` element helps manage styling inside other elements and can 
+be used to make themes. The `core-style` element can be either a producer 
+or consumer of styling. If it has its `id` property set, it's a producer. 
+Elements that are producers should include css styling as their text content.
+If a `core-style` has its `ref` property set, it's a consumer. A `core-style`
+typically sets its `ref` property to the value of the `id` property of the
+`core-style` it wants to use. This allows a single producer to be used in 
+multiple places, for example, in many different elements.
+
+It's common to place `core-style` producer elements inside HTMLImports.
+Remote stylesheets should be included this way, the &#64;import css mechanism is
+not currently supported.
+
+Here's a basic example:
+
+    <polymer-element name="x-test" noscript>
+      <template>
+        <core-style ref="x-test"></core-style>
+        <content></content>
+      </template>
+    </polymer-element>
+
+The `x-test` element above will be styled by any `core-style` elements that have
+`id` set to `x-test`. These `core-style` producers are separate from the element
+definition, allowing a user of the element to style it independent of the author's 
+styling. For example:
+
+    <core-style id="x-test">
+      :host {
+        backgound-color: steelblue;
+      }
+    </core-style>
+
+The content of the `x-test` `core-style` producer gets included inside the
+shadowRoot of the `x-test` element. If the content of the `x-test` producer
+`core-style` changes, all consumers of it are automatically kept in sync. This
+allows updating styling on the fly.
+
+The `core-style` element also supports bindings and it is the producer 
+`core-style` element is the model for its content. Here's an example:
+
+    <core-style id="x-test">
+      :host {
+        background-color: {{myColor}};
+      }
+    </core-style>
+    <script>
+      document._currentScript.ownerDocument.getElementById('x-test').myColor = 'orange';
+    </script>
+
+Finally, to facilitate sharing data between `core-style` elements, all
+`core-style` elements have a `g` property which is set to the global 
+`CoreStyle.g`. Here's an example:
+
+    <core-style id="x-test">
+      :host {
+        background-color: {{g.myColor}};
+      }
+    </core-style>
+    <script>
+      CoreStyle.g.myColor = 'tomato';
+    </script>
+
+Finally, one `core-style` can be nested inside another. The `core-style`
+element has a `list` property which is a map of all the `core-style` producers.
+A `core-style` producer's content is available via its `cssText` property. 
+Putting this together:
+
+    <core-style id="common">
+      :host {
+        font-family: sans-serif;
+      }
+    </core-style>
+
+    <core-style id="x-test">
+      {{list.common.cssText}}
+
+      :host {
+        background-color: {{g.myColor}};
+      }
+    </core-style>
+
+
+@group Polymer Core Elements
+@element core-style
+@homepage github.io
+-->
+
+
+
+<polymer-element name="core-style" hidden assetpath="bower_components/core-style/">
+
+</polymer-element>
+
+
+<core-style id="paper-input">
+
+#label.focused,
+#floatedLabel.focused {
+  color: {{g.paperInput.focusedColor}};
+}
+
+#underlineHighlight.focused,
+#caretInner {
+  background-color: {{g.paperInput.focusedColor}};
+}
+
+#error,
+:host(.invalid) #label.focused,
+:host(.invalid) #floatedLabel.focused {
+  color: {{g.paperInput.invalidColor}};
+}
+:host(.invalid) #underlineHighlight.focused,
+:host(.invalid) #caretInner {
+  background-color: {{g.paperInput.invalidColor}};
+}
+
+</core-style>
+
+<polymer-element name="paper-input" extends="core-input" attributes="label floatingLabel maxRows error" on-down="{{downAction}}" on-up="{{upAction}}" assetpath="bower_components/paper-input/">
+
+  <template>
+
+    <style>:host {
+  display: inline-block;
+  outline: none;
+  text-align: inherit;
+  color: #757575;
+}
+:host(:hover) {
+  cursor: text;
+}
+
+#container {
+  position: relative;
+}
+
+#inputClone,
+#minInputHeight,
+#maxInputHeight {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  padding: 0.5em 0;
+}
+
+:host /deep/ input,
+:host /deep/ textarea {
+  font: inherit;
+  color: #000;
+  padding: 0;
+  /* Important to use margin here so the margin remains visible
+   * when textarea scrolls internally. */
+  margin: 0.5em 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+:host /deep/ input:invalid,
+:host /deep/ textarea:invalid {
+  box-shadow: none;
+}
+
+.host /deep/ textarea {
+  resize: none;
+}
+
+#floatedLabel {
+  font-size: 0.75em;
+  background: transparent;
+  white-space: nowrap;
+}
+#floatedLabel.hidden {
+  visibility: hidden;
+}
+#floatedLabel.focused {
+  visibility: visible;
+}
+
+#label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 0.5em 0;
+  background: transparent;
+  -moz-transform-origin: 0% 0%;
+  -webkit-transform-origin: 0% 0%;
+  transform-origin: 0% 0%;
+  pointer-events: none;
+}
+#label.hidden {
+  display: none;
+}
+#label.animating {
+  /* TODO: transforms are unprefixed in M36/ Remove when stable. */
+  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.2, 0, 0.03, 1);
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.03, 1);
+}
+
+#labelSpan {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+  max-width: 100%;
+}
+
+#errorContainer {
+  visibility: hidden;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+:host(.invalid) #errorContainer {
+  visibility: visible;
+}
+
+#error {
+  -webkit-flex: 1;
+  flex: 1;
+  font-size: 0.75em;
+  padding: 0.5em 0;
+}
+
+#errorIcon {
+  background-image: url(bower_components/paper-input/error-100.png);
+  background-size: 24px 24px;
+  height: 24px;
+  width: 24px;
+}
+
+
+@media (min-resolution: 2dppx) {
+  #errorIcon {
+    background-image: url(bower_components/paper-input/error-200.png);
+    background-size: 24px 24px;
+  }
+}
+
+#underlineContainer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+}
+
+:host([multiline]) #underlineContainer {
+  bottom: auto;
+}
+
+:host([multiline]) #underlineContainer.animating {
+  -webkit-transition: top 0.2s ease-in;
+  transition: top 0.2s ease-in;
+}
+
+#underline {
+  height: 1px;
+  background: #757575;
+  border-bottom-color: #757575;
+}
+
+:host([disabled]) #underline {
+  border-bottom: 1px dashed;
+  height: 0px;
+  background: transparent;
+}
+
+#underlineHighlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  -webkit-transform: scale(0,2);
+  transform: scale(0,2);
+}
+#underlineHighlight.pressed {
+  -webkit-transform: scale(0.1,2);
+  transform: scale(0.1,2);
+  /* TODO: transforms are unprefixed in M36/ Remove when stable. */
+  -webkit-transition: -webkit-transform 0.1s cubic-bezier(0.2, 0, 0.03, 1);
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.03, 1);
+}
+#underlineHighlight.animating {
+  /* TODO: transforms are unprefixed in M36/ Remove when stable. */
+  -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.2, 0, 0.03, 1);
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.03, 1);
+}
+#underlineHighlight.focused {
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+
+#caret {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0;
+  -moz-transform-origin: 0%;
+  -webkit-transform-origin-x: 0%;
+  transform-origin-x: 0%;
+  -webkit-transform: scaleX(1) translateX(10%);
+  transform: scaleX(1) translateX(10%);
+}
+#caret.animating {
+  display: block;
+   /* TODO: transforms are unprefixed in M36/ Remove when stable. */
+  -webkit-transition: -webkit-transform 0.2s ease-out, opacity 0.2s ease-out;
+  transition: transform 0.3s cubic-bezier(0.2, 0, 0.03, 1);
+}
+#caret.focused {
+  display: block;
+  opacity: 0.75;
+  -webkit-transform: scaleX(0) translateX(0);
+  transform: scaleX(0) translateX(0);
+}
+#caretInner {
+  position: absolute;
+  top: 0.6em;
+  left: 0;
+  height: 1.2em;
+  width: 25%;
+}
+</style>
+
+    <core-style ref="paper-input"></core-style>
+
+    <div id="floatedLabel" class="hidden" hidden?="{{!floatingLabel}}"><span id="floatedLabelSpan">{{label}}</span></div>
+
+    <div id="container" on-transitionend="{{transitionEndAction}}" on-webkittransitionend="{{transitionEndAction}}">
+
+      <div id="label"><span id="labelSpan">{{label}}</span></div>
+
+      <div id="inputContainer">
+
+        <div id="inputClone">
+          <span id="inputCloneSpan" aria-hidden="true">&#xA0;</span>
+        </div>
+
+        <template if="{{multiline}}">
+          <div id="minInputHeight"></div>
+          <div id="maxInputHeight"></div>
+        </template>
+
+        <shadow></shadow>
+
+      </div>
+
+      <div id="underlineContainer">
+        <div id="underline"></div>
+        <div id="underlineHighlight" class="focusedColor"></div>
+      </div>
+
+      <div id="caret">
+        <div id="caretInner" class="focusedColor"></div>
+      </div>
+
+    </div>
+
+    <div id="errorContainer">
+      <div id="error" role="alert" aria-hidden="{{!invalid}}">{{error || validationMessage}}</div>
+      <div id="errorIcon"></div>
+    </div>
+
+  </template>
+
+  
+
+</polymer-element>
+
+
+<polymer-element name="paper-slider" extends="core-range" attributes="snaps pin disabled secondaryProgress editable immediateValue" assetpath="bower_components/paper-slider/">
+<template>
+
+  <style>/*
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+*/
+
+:host {
+  display: inline-block;
+  width: 200px;
+  cursor: default;
+}
+
+#sliderContainer {
+  position: relative;
+  width: calc(100% - 32px);
+  height: 32px;
+}
+
+:host([editable]) #sliderContainer {
+  float: left;
+  width: calc(100% - 72px);
+}
+
+#sliderBar {
+  position: absolute;
+  top: 15px;
+  left: 16px;
+  height: 2px;
+  width: 100%;
+  padding: 8px 0;
+  margin: -8px 0;
+}
+
+.slider-markers {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  height: 2px;
+  width: calc(100% + 2px);
+  box-sizing: border-box;
+  pointer-events: none;
+  /* background-image: -webkit-linear-gradient(0deg, #ccc, #ccc 1px, transparent 1px, transparent);
+  background-size: 10%; */
+}
+
+.slider-markers::after, .slider-marker::after {
+  content: "";
+  display: block;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background-color: black;
+}
+
+#sliderBar::shadow #activeProgress {
+  background-color: #3f51b5;
+}
+
+#sliderKnob {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 32px;
+  height: 32px;
+}
+
+#sliderKnob.transiting {
+  transition: left 0.08s ease;
+}
+
+#sliderKnob:focus {
+  outline: none;
+}
+
+#sliderKnob.dragging {
+  transition: none;
+}
+
+#sliderKnob.snaps.dragging {
+  transition: -webkit-transform 0.08s ease;
+  transition: transform 0.08s ease;
+}
+
+#sliderKnobInner {
+  width: 12px;
+  height: 12px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  border-radius: 50%;
+  background-color: #3f51b5;
+  /* FIXME(ffu): can't use the following. https://github.com/Polymer/platform/issues/53 */
+  /* transition-property: height, width, background-color, border;
+  transition-duration: 0.1s;
+  transition-timing-function: ease; */
+  transition: height 0.18s ease, width 0.18s ease, background-color 0.28s ease, border 0.18s ease;
+}
+
+#sliderKnob.expand:not(.pin) > #sliderKnobInner {
+  width: 100%;
+  height: 100%;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+#sliderKnob.ring > #sliderKnobInner {
+  background-color: #fff;
+  border: 2px solid #c8c8c8;
+}
+
+#sliderKnobInner::before {
+  background-color: #3f51b5;
+}
+
+#sliderKnob.pin > #sliderKnobInner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  margin-left: 3px;
+  border-radius: 50% 50% 50% 0;
+  -webkit-transform: rotate(-45deg) scale(0) translate(0);
+  transform: rotate(-45deg) scale(0) translate(0);
+}
+
+#sliderKnobInner::before, #sliderKnobInner::after {
+  transition: -webkit-transform .2s ease, background-color .18s ease;
+  transition: transform .2s ease, background-color .18s ease;
+}
+
+#sliderKnob.pin.ring > #sliderKnobInner::before {
+  background-color: #c8c8c8;
+}
+
+#sliderKnob.pin.expand > #sliderKnobInner::before {
+  -webkit-transform: rotate(-45deg) scale(1) translate(17px, -17px);
+  transform: rotate(-45deg) scale(1) translate(17px, -17px);
+}
+
+#sliderKnob.pin > #sliderKnobInner::after {
+  /* FIXME(ffu): add dummy quotes to workaround https://github.com/Polymer/platform/issues/57 */
+  content: attr(value) "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 26px;
+  text-align: center;
+  color: #fff;
+  font-size: 10px;
+  -webkit-transform: scale(0) translate(0);
+  transform: scale(0) translate(0);
+}
+
+#sliderKnob.pin.expand > #sliderKnobInner::after {
+  -webkit-transform: scale(1) translate(0, -17px);
+  transform: scale(1) translate(0, -17px);
+}
+
+.slider-input {
+  width: 40px;
+  height: 32px;
+  float: right;
+}
+
+.slider-input::shadow input {
+  /* FIXME(ffu): should one be able set text-align directly on paper-input? */
+  text-align: center;
+}
+
+/* disabled state */
+:host([disabled]) #sliderContainer {
+  pointer-events: none;
+}
+
+:host([disabled]) {
+  pointer-events: none;
+}
+
+:host([disabled]) #sliderKnob > #sliderKnobInner {
+  width: 12px;
+  height: 12px;
+  background-color: #c8c8c8;
+  border: 2px solid #fff;
+}
+
+:host([disabled]) #sliderContainer > #sliderBar::shadow #activeProgress {
+  background-color: #c8c8c8;
+}
+</style>
+
+  <div id="sliderContainer" on-keydown="{{keydown}}">
+  
+    <paper-progress id="sliderBar" aria-hidden="true" min="{{min}}" max="{{max}}" value="{{immediateValue}}" secondaryprogress="{{secondaryProgress}}" on-down="{{bardown}}" on-up="{{resetKnob}}" on-trackstart="{{trackStart}}" on-trackx="{{trackx}}" on-trackend="{{trackEnd}}"></paper-progress>
+    
+    <template if="{{snaps &amp;&amp; !disabled}}">
+      <div class="slider-markers" horizontal="" layout="">
+        <template repeat="{{markers}}">
+          <div flex="" class="slider-marker"></div>
+        </template>
+      </div>
+    </template>
+    
+    <div id="sliderKnob" class="{{ {pin : pin, snaps : snaps} | tokenList }}" on-down="{{expandKnob}}" on-up="{{resetKnob}}" on-trackstart="{{trackStart}}" on-trackx="{{trackx}}" on-trackend="{{trackEnd}}" on-transitionend="{{knobTransitionEnd}}" role="slider" aria-valuenow="{{value}}" aria-valuemin="{{min}}" aria-valuemax="{{max}}" aria-valuetext="{{value}}" tabindex="0" center-justified="" center="" horizontal="" layout="">
+        
+      <div id="sliderKnobInner" value="{{immediateValue}}"></div>
+      
+    </div>
+    
+  </div>
+  
+  <template if="{{editable}}">
+    <paper-input id="input" class="slider-input" value="{{immediateValue}}" validate="^[-+]?[0-9]*\.?[0-9]+$" disabled?="{{disabled}}" on-change="{{inputChange}}"></paper-input>
+  </template>
+
+</template>
+
+</polymer-element>
+
+
+<polymer-element name="spotify-player" assetpath="elements/spotify-player/">
+    <template>
+
+        <!-- Fontawesome icons -->
+        <style>/*!
+ *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */@font-face{font-family:'FontAwesome';src:url(fonts/fontawesome-webfont.eot?v=4.1.0);src:url(fonts/fontawesome-webfont.eot?#iefix&v=4.1.0) format('embedded-opentype'),url(fonts/fontawesome-webfont.woff?v=4.1.0) format('woff'),url(fonts/fontawesome-webfont.ttf?v=4.1.0) format('truetype'),url(fonts/fontawesome-webfont.svg?v=4.1.0#fontawesomeregular) format('svg');font-weight:normal;font-style:normal}.fa{display:inline-block;font-family:FontAwesome;font-style:normal;font-weight:normal;line-height:1;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.fa-lg{font-size:1.33333333em;line-height:.75em;vertical-align:-15%}.fa-2x{font-size:2em}.fa-3x{font-size:3em}.fa-4x{font-size:4em}.fa-5x{font-size:5em}.fa-fw{width:1.28571429em;text-align:center}.fa-ul{padding-left:0;margin-left:2.14285714em;list-style-type:none}.fa-ul>li{position:relative}.fa-li{position:absolute;left:-2.14285714em;width:2.14285714em;top:.14285714em;text-align:center}.fa-li.fa-lg{left:-1.85714286em}.fa-border{padding:.2em .25em .15em;border:solid .08em #eee;border-radius:.1em}.pull-right{float:right}.pull-left{float:left}.fa.pull-left{margin-right:.3em}.fa.pull-right{margin-left:.3em}.fa-spin{-webkit-animation:spin 2s infinite linear;-moz-animation:spin 2s infinite linear;-o-animation:spin 2s infinite linear;animation:spin 2s infinite linear}@-moz-keyframes spin{0%{-moz-transform:rotate(0deg)}100%{-moz-transform:rotate(359deg)}}@-webkit-keyframes spin{0%{-webkit-transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg)}}@-o-keyframes spin{0%{-o-transform:rotate(0deg)}100%{-o-transform:rotate(359deg)}}@keyframes spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg);transform:rotate(359deg)}}.fa-rotate-90{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=1);-webkit-transform:rotate(90deg);-moz-transform:rotate(90deg);-ms-transform:rotate(90deg);-o-transform:rotate(90deg);transform:rotate(90deg)}.fa-rotate-180{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);-webkit-transform:rotate(180deg);-moz-transform:rotate(180deg);-ms-transform:rotate(180deg);-o-transform:rotate(180deg);transform:rotate(180deg)}.fa-rotate-270{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);-webkit-transform:rotate(270deg);-moz-transform:rotate(270deg);-ms-transform:rotate(270deg);-o-transform:rotate(270deg);transform:rotate(270deg)}.fa-flip-horizontal{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);-webkit-transform:scale(-1, 1);-moz-transform:scale(-1, 1);-ms-transform:scale(-1, 1);-o-transform:scale(-1, 1);transform:scale(-1, 1)}.fa-flip-vertical{filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);-webkit-transform:scale(1, -1);-moz-transform:scale(1, -1);-ms-transform:scale(1, -1);-o-transform:scale(1, -1);transform:scale(1, -1)}.fa-stack{position:relative;display:inline-block;width:2em;height:2em;line-height:2em;vertical-align:middle}.fa-stack-1x,.fa-stack-2x{position:absolute;left:0;width:100%;text-align:center}.fa-stack-1x{line-height:inherit}.fa-stack-2x{font-size:2em}.fa-inverse{color:#fff}.fa-glass:before{content:"\f000"}.fa-music:before{content:"\f001"}.fa-search:before{content:"\f002"}.fa-envelope-o:before{content:"\f003"}.fa-heart:before{content:"\f004"}.fa-star:before{content:"\f005"}.fa-star-o:before{content:"\f006"}.fa-user:before{content:"\f007"}.fa-film:before{content:"\f008"}.fa-th-large:before{content:"\f009"}.fa-th:before{content:"\f00a"}.fa-th-list:before{content:"\f00b"}.fa-check:before{content:"\f00c"}.fa-times:before{content:"\f00d"}.fa-search-plus:before{content:"\f00e"}.fa-search-minus:before{content:"\f010"}.fa-power-off:before{content:"\f011"}.fa-signal:before{content:"\f012"}.fa-gear:before,.fa-cog:before{content:"\f013"}.fa-trash-o:before{content:"\f014"}.fa-home:before{content:"\f015"}.fa-file-o:before{content:"\f016"}.fa-clock-o:before{content:"\f017"}.fa-road:before{content:"\f018"}.fa-download:before{content:"\f019"}.fa-arrow-circle-o-down:before{content:"\f01a"}.fa-arrow-circle-o-up:before{content:"\f01b"}.fa-inbox:before{content:"\f01c"}.fa-play-circle-o:before{content:"\f01d"}.fa-rotate-right:before,.fa-repeat:before{content:"\f01e"}.fa-refresh:before{content:"\f021"}.fa-list-alt:before{content:"\f022"}.fa-lock:before{content:"\f023"}.fa-flag:before{content:"\f024"}.fa-headphones:before{content:"\f025"}.fa-volume-off:before{content:"\f026"}.fa-volume-down:before{content:"\f027"}.fa-volume-up:before{content:"\f028"}.fa-qrcode:before{content:"\f029"}.fa-barcode:before{content:"\f02a"}.fa-tag:before{content:"\f02b"}.fa-tags:before{content:"\f02c"}.fa-book:before{content:"\f02d"}.fa-bookmark:before{content:"\f02e"}.fa-print:before{content:"\f02f"}.fa-camera:before{content:"\f030"}.fa-font:before{content:"\f031"}.fa-bold:before{content:"\f032"}.fa-italic:before{content:"\f033"}.fa-text-height:before{content:"\f034"}.fa-text-width:before{content:"\f035"}.fa-align-left:before{content:"\f036"}.fa-align-center:before{content:"\f037"}.fa-align-right:before{content:"\f038"}.fa-align-justify:before{content:"\f039"}.fa-list:before{content:"\f03a"}.fa-dedent:before,.fa-outdent:before{content:"\f03b"}.fa-indent:before{content:"\f03c"}.fa-video-camera:before{content:"\f03d"}.fa-photo:before,.fa-image:before,.fa-picture-o:before{content:"\f03e"}.fa-pencil:before{content:"\f040"}.fa-map-marker:before{content:"\f041"}.fa-adjust:before{content:"\f042"}.fa-tint:before{content:"\f043"}.fa-edit:before,.fa-pencil-square-o:before{content:"\f044"}.fa-share-square-o:before{content:"\f045"}.fa-check-square-o:before{content:"\f046"}.fa-arrows:before{content:"\f047"}.fa-step-backward:before{content:"\f048"}.fa-fast-backward:before{content:"\f049"}.fa-backward:before{content:"\f04a"}.fa-play:before{content:"\f04b"}.fa-pause:before{content:"\f04c"}.fa-stop:before{content:"\f04d"}.fa-forward:before{content:"\f04e"}.fa-fast-forward:before{content:"\f050"}.fa-step-forward:before{content:"\f051"}.fa-eject:before{content:"\f052"}.fa-chevron-left:before{content:"\f053"}.fa-chevron-right:before{content:"\f054"}.fa-plus-circle:before{content:"\f055"}.fa-minus-circle:before{content:"\f056"}.fa-times-circle:before{content:"\f057"}.fa-check-circle:before{content:"\f058"}.fa-question-circle:before{content:"\f059"}.fa-info-circle:before{content:"\f05a"}.fa-crosshairs:before{content:"\f05b"}.fa-times-circle-o:before{content:"\f05c"}.fa-check-circle-o:before{content:"\f05d"}.fa-ban:before{content:"\f05e"}.fa-arrow-left:before{content:"\f060"}.fa-arrow-right:before{content:"\f061"}.fa-arrow-up:before{content:"\f062"}.fa-arrow-down:before{content:"\f063"}.fa-mail-forward:before,.fa-share:before{content:"\f064"}.fa-expand:before{content:"\f065"}.fa-compress:before{content:"\f066"}.fa-plus:before{content:"\f067"}.fa-minus:before{content:"\f068"}.fa-asterisk:before{content:"\f069"}.fa-exclamation-circle:before{content:"\f06a"}.fa-gift:before{content:"\f06b"}.fa-leaf:before{content:"\f06c"}.fa-fire:before{content:"\f06d"}.fa-eye:before{content:"\f06e"}.fa-eye-slash:before{content:"\f070"}.fa-warning:before,.fa-exclamation-triangle:before{content:"\f071"}.fa-plane:before{content:"\f072"}.fa-calendar:before{content:"\f073"}.fa-random:before{content:"\f074"}.fa-comment:before{content:"\f075"}.fa-magnet:before{content:"\f076"}.fa-chevron-up:before{content:"\f077"}.fa-chevron-down:before{content:"\f078"}.fa-retweet:before{content:"\f079"}.fa-shopping-cart:before{content:"\f07a"}.fa-folder:before{content:"\f07b"}.fa-folder-open:before{content:"\f07c"}.fa-arrows-v:before{content:"\f07d"}.fa-arrows-h:before{content:"\f07e"}.fa-bar-chart-o:before{content:"\f080"}.fa-twitter-square:before{content:"\f081"}.fa-facebook-square:before{content:"\f082"}.fa-camera-retro:before{content:"\f083"}.fa-key:before{content:"\f084"}.fa-gears:before,.fa-cogs:before{content:"\f085"}.fa-comments:before{content:"\f086"}.fa-thumbs-o-up:before{content:"\f087"}.fa-thumbs-o-down:before{content:"\f088"}.fa-star-half:before{content:"\f089"}.fa-heart-o:before{content:"\f08a"}.fa-sign-out:before{content:"\f08b"}.fa-linkedin-square:before{content:"\f08c"}.fa-thumb-tack:before{content:"\f08d"}.fa-external-link:before{content:"\f08e"}.fa-sign-in:before{content:"\f090"}.fa-trophy:before{content:"\f091"}.fa-github-square:before{content:"\f092"}.fa-upload:before{content:"\f093"}.fa-lemon-o:before{content:"\f094"}.fa-phone:before{content:"\f095"}.fa-square-o:before{content:"\f096"}.fa-bookmark-o:before{content:"\f097"}.fa-phone-square:before{content:"\f098"}.fa-twitter:before{content:"\f099"}.fa-facebook:before{content:"\f09a"}.fa-github:before{content:"\f09b"}.fa-unlock:before{content:"\f09c"}.fa-credit-card:before{content:"\f09d"}.fa-rss:before{content:"\f09e"}.fa-hdd-o:before{content:"\f0a0"}.fa-bullhorn:before{content:"\f0a1"}.fa-bell:before{content:"\f0f3"}.fa-certificate:before{content:"\f0a3"}.fa-hand-o-right:before{content:"\f0a4"}.fa-hand-o-left:before{content:"\f0a5"}.fa-hand-o-up:before{content:"\f0a6"}.fa-hand-o-down:before{content:"\f0a7"}.fa-arrow-circle-left:before{content:"\f0a8"}.fa-arrow-circle-right:before{content:"\f0a9"}.fa-arrow-circle-up:before{content:"\f0aa"}.fa-arrow-circle-down:before{content:"\f0ab"}.fa-globe:before{content:"\f0ac"}.fa-wrench:before{content:"\f0ad"}.fa-tasks:before{content:"\f0ae"}.fa-filter:before{content:"\f0b0"}.fa-briefcase:before{content:"\f0b1"}.fa-arrows-alt:before{content:"\f0b2"}.fa-group:before,.fa-users:before{content:"\f0c0"}.fa-chain:before,.fa-link:before{content:"\f0c1"}.fa-cloud:before{content:"\f0c2"}.fa-flask:before{content:"\f0c3"}.fa-cut:before,.fa-scissors:before{content:"\f0c4"}.fa-copy:before,.fa-files-o:before{content:"\f0c5"}.fa-paperclip:before{content:"\f0c6"}.fa-save:before,.fa-floppy-o:before{content:"\f0c7"}.fa-square:before{content:"\f0c8"}.fa-navicon:before,.fa-reorder:before,.fa-bars:before{content:"\f0c9"}.fa-list-ul:before{content:"\f0ca"}.fa-list-ol:before{content:"\f0cb"}.fa-strikethrough:before{content:"\f0cc"}.fa-underline:before{content:"\f0cd"}.fa-table:before{content:"\f0ce"}.fa-magic:before{content:"\f0d0"}.fa-truck:before{content:"\f0d1"}.fa-pinterest:before{content:"\f0d2"}.fa-pinterest-square:before{content:"\f0d3"}.fa-google-plus-square:before{content:"\f0d4"}.fa-google-plus:before{content:"\f0d5"}.fa-money:before{content:"\f0d6"}.fa-caret-down:before{content:"\f0d7"}.fa-caret-up:before{content:"\f0d8"}.fa-caret-left:before{content:"\f0d9"}.fa-caret-right:before{content:"\f0da"}.fa-columns:before{content:"\f0db"}.fa-unsorted:before,.fa-sort:before{content:"\f0dc"}.fa-sort-down:before,.fa-sort-desc:before{content:"\f0dd"}.fa-sort-up:before,.fa-sort-asc:before{content:"\f0de"}.fa-envelope:before{content:"\f0e0"}.fa-linkedin:before{content:"\f0e1"}.fa-rotate-left:before,.fa-undo:before{content:"\f0e2"}.fa-legal:before,.fa-gavel:before{content:"\f0e3"}.fa-dashboard:before,.fa-tachometer:before{content:"\f0e4"}.fa-comment-o:before{content:"\f0e5"}.fa-comments-o:before{content:"\f0e6"}.fa-flash:before,.fa-bolt:before{content:"\f0e7"}.fa-sitemap:before{content:"\f0e8"}.fa-umbrella:before{content:"\f0e9"}.fa-paste:before,.fa-clipboard:before{content:"\f0ea"}.fa-lightbulb-o:before{content:"\f0eb"}.fa-exchange:before{content:"\f0ec"}.fa-cloud-download:before{content:"\f0ed"}.fa-cloud-upload:before{content:"\f0ee"}.fa-user-md:before{content:"\f0f0"}.fa-stethoscope:before{content:"\f0f1"}.fa-suitcase:before{content:"\f0f2"}.fa-bell-o:before{content:"\f0a2"}.fa-coffee:before{content:"\f0f4"}.fa-cutlery:before{content:"\f0f5"}.fa-file-text-o:before{content:"\f0f6"}.fa-building-o:before{content:"\f0f7"}.fa-hospital-o:before{content:"\f0f8"}.fa-ambulance:before{content:"\f0f9"}.fa-medkit:before{content:"\f0fa"}.fa-fighter-jet:before{content:"\f0fb"}.fa-beer:before{content:"\f0fc"}.fa-h-square:before{content:"\f0fd"}.fa-plus-square:before{content:"\f0fe"}.fa-angle-double-left:before{content:"\f100"}.fa-angle-double-right:before{content:"\f101"}.fa-angle-double-up:before{content:"\f102"}.fa-angle-double-down:before{content:"\f103"}.fa-angle-left:before{content:"\f104"}.fa-angle-right:before{content:"\f105"}.fa-angle-up:before{content:"\f106"}.fa-angle-down:before{content:"\f107"}.fa-desktop:before{content:"\f108"}.fa-laptop:before{content:"\f109"}.fa-tablet:before{content:"\f10a"}.fa-mobile-phone:before,.fa-mobile:before{content:"\f10b"}.fa-circle-o:before{content:"\f10c"}.fa-quote-left:before{content:"\f10d"}.fa-quote-right:before{content:"\f10e"}.fa-spinner:before{content:"\f110"}.fa-circle:before{content:"\f111"}.fa-mail-reply:before,.fa-reply:before{content:"\f112"}.fa-github-alt:before{content:"\f113"}.fa-folder-o:before{content:"\f114"}.fa-folder-open-o:before{content:"\f115"}.fa-smile-o:before{content:"\f118"}.fa-frown-o:before{content:"\f119"}.fa-meh-o:before{content:"\f11a"}.fa-gamepad:before{content:"\f11b"}.fa-keyboard-o:before{content:"\f11c"}.fa-flag-o:before{content:"\f11d"}.fa-flag-checkered:before{content:"\f11e"}.fa-terminal:before{content:"\f120"}.fa-code:before{content:"\f121"}.fa-mail-reply-all:before,.fa-reply-all:before{content:"\f122"}.fa-star-half-empty:before,.fa-star-half-full:before,.fa-star-half-o:before{content:"\f123"}.fa-location-arrow:before{content:"\f124"}.fa-crop:before{content:"\f125"}.fa-code-fork:before{content:"\f126"}.fa-unlink:before,.fa-chain-broken:before{content:"\f127"}.fa-question:before{content:"\f128"}.fa-info:before{content:"\f129"}.fa-exclamation:before{content:"\f12a"}.fa-superscript:before{content:"\f12b"}.fa-subscript:before{content:"\f12c"}.fa-eraser:before{content:"\f12d"}.fa-puzzle-piece:before{content:"\f12e"}.fa-microphone:before{content:"\f130"}.fa-microphone-slash:before{content:"\f131"}.fa-shield:before{content:"\f132"}.fa-calendar-o:before{content:"\f133"}.fa-fire-extinguisher:before{content:"\f134"}.fa-rocket:before{content:"\f135"}.fa-maxcdn:before{content:"\f136"}.fa-chevron-circle-left:before{content:"\f137"}.fa-chevron-circle-right:before{content:"\f138"}.fa-chevron-circle-up:before{content:"\f139"}.fa-chevron-circle-down:before{content:"\f13a"}.fa-html5:before{content:"\f13b"}.fa-css3:before{content:"\f13c"}.fa-anchor:before{content:"\f13d"}.fa-unlock-alt:before{content:"\f13e"}.fa-bullseye:before{content:"\f140"}.fa-ellipsis-h:before{content:"\f141"}.fa-ellipsis-v:before{content:"\f142"}.fa-rss-square:before{content:"\f143"}.fa-play-circle:before{content:"\f144"}.fa-ticket:before{content:"\f145"}.fa-minus-square:before{content:"\f146"}.fa-minus-square-o:before{content:"\f147"}.fa-level-up:before{content:"\f148"}.fa-level-down:before{content:"\f149"}.fa-check-square:before{content:"\f14a"}.fa-pencil-square:before{content:"\f14b"}.fa-external-link-square:before{content:"\f14c"}.fa-share-square:before{content:"\f14d"}.fa-compass:before{content:"\f14e"}.fa-toggle-down:before,.fa-caret-square-o-down:before{content:"\f150"}.fa-toggle-up:before,.fa-caret-square-o-up:before{content:"\f151"}.fa-toggle-right:before,.fa-caret-square-o-right:before{content:"\f152"}.fa-euro:before,.fa-eur:before{content:"\f153"}.fa-gbp:before{content:"\f154"}.fa-dollar:before,.fa-usd:before{content:"\f155"}.fa-rupee:before,.fa-inr:before{content:"\f156"}.fa-cny:before,.fa-rmb:before,.fa-yen:before,.fa-jpy:before{content:"\f157"}.fa-ruble:before,.fa-rouble:before,.fa-rub:before{content:"\f158"}.fa-won:before,.fa-krw:before{content:"\f159"}.fa-bitcoin:before,.fa-btc:before{content:"\f15a"}.fa-file:before{content:"\f15b"}.fa-file-text:before{content:"\f15c"}.fa-sort-alpha-asc:before{content:"\f15d"}.fa-sort-alpha-desc:before{content:"\f15e"}.fa-sort-amount-asc:before{content:"\f160"}.fa-sort-amount-desc:before{content:"\f161"}.fa-sort-numeric-asc:before{content:"\f162"}.fa-sort-numeric-desc:before{content:"\f163"}.fa-thumbs-up:before{content:"\f164"}.fa-thumbs-down:before{content:"\f165"}.fa-youtube-square:before{content:"\f166"}.fa-youtube:before{content:"\f167"}.fa-xing:before{content:"\f168"}.fa-xing-square:before{content:"\f169"}.fa-youtube-play:before{content:"\f16a"}.fa-dropbox:before{content:"\f16b"}.fa-stack-overflow:before{content:"\f16c"}.fa-instagram:before{content:"\f16d"}.fa-flickr:before{content:"\f16e"}.fa-adn:before{content:"\f170"}.fa-bitbucket:before{content:"\f171"}.fa-bitbucket-square:before{content:"\f172"}.fa-tumblr:before{content:"\f173"}.fa-tumblr-square:before{content:"\f174"}.fa-long-arrow-down:before{content:"\f175"}.fa-long-arrow-up:before{content:"\f176"}.fa-long-arrow-left:before{content:"\f177"}.fa-long-arrow-right:before{content:"\f178"}.fa-apple:before{content:"\f179"}.fa-windows:before{content:"\f17a"}.fa-android:before{content:"\f17b"}.fa-linux:before{content:"\f17c"}.fa-dribbble:before{content:"\f17d"}.fa-skype:before{content:"\f17e"}.fa-foursquare:before{content:"\f180"}.fa-trello:before{content:"\f181"}.fa-female:before{content:"\f182"}.fa-male:before{content:"\f183"}.fa-gittip:before{content:"\f184"}.fa-sun-o:before{content:"\f185"}.fa-moon-o:before{content:"\f186"}.fa-archive:before{content:"\f187"}.fa-bug:before{content:"\f188"}.fa-vk:before{content:"\f189"}.fa-weibo:before{content:"\f18a"}.fa-renren:before{content:"\f18b"}.fa-pagelines:before{content:"\f18c"}.fa-stack-exchange:before{content:"\f18d"}.fa-arrow-circle-o-right:before{content:"\f18e"}.fa-arrow-circle-o-left:before{content:"\f190"}.fa-toggle-left:before,.fa-caret-square-o-left:before{content:"\f191"}.fa-dot-circle-o:before{content:"\f192"}.fa-wheelchair:before{content:"\f193"}.fa-vimeo-square:before{content:"\f194"}.fa-turkish-lira:before,.fa-try:before{content:"\f195"}.fa-plus-square-o:before{content:"\f196"}.fa-space-shuttle:before{content:"\f197"}.fa-slack:before{content:"\f198"}.fa-envelope-square:before{content:"\f199"}.fa-wordpress:before{content:"\f19a"}.fa-openid:before{content:"\f19b"}.fa-institution:before,.fa-bank:before,.fa-university:before{content:"\f19c"}.fa-mortar-board:before,.fa-graduation-cap:before{content:"\f19d"}.fa-yahoo:before{content:"\f19e"}.fa-google:before{content:"\f1a0"}.fa-reddit:before{content:"\f1a1"}.fa-reddit-square:before{content:"\f1a2"}.fa-stumbleupon-circle:before{content:"\f1a3"}.fa-stumbleupon:before{content:"\f1a4"}.fa-delicious:before{content:"\f1a5"}.fa-digg:before{content:"\f1a6"}.fa-pied-piper-square:before,.fa-pied-piper:before{content:"\f1a7"}.fa-pied-piper-alt:before{content:"\f1a8"}.fa-drupal:before{content:"\f1a9"}.fa-joomla:before{content:"\f1aa"}.fa-language:before{content:"\f1ab"}.fa-fax:before{content:"\f1ac"}.fa-building:before{content:"\f1ad"}.fa-child:before{content:"\f1ae"}.fa-paw:before{content:"\f1b0"}.fa-spoon:before{content:"\f1b1"}.fa-cube:before{content:"\f1b2"}.fa-cubes:before{content:"\f1b3"}.fa-behance:before{content:"\f1b4"}.fa-behance-square:before{content:"\f1b5"}.fa-steam:before{content:"\f1b6"}.fa-steam-square:before{content:"\f1b7"}.fa-recycle:before{content:"\f1b8"}.fa-automobile:before,.fa-car:before{content:"\f1b9"}.fa-cab:before,.fa-taxi:before{content:"\f1ba"}.fa-tree:before{content:"\f1bb"}.fa-spotify:before{content:"\f1bc"}.fa-deviantart:before{content:"\f1bd"}.fa-soundcloud:before{content:"\f1be"}.fa-database:before{content:"\f1c0"}.fa-file-pdf-o:before{content:"\f1c1"}.fa-file-word-o:before{content:"\f1c2"}.fa-file-excel-o:before{content:"\f1c3"}.fa-file-powerpoint-o:before{content:"\f1c4"}.fa-file-photo-o:before,.fa-file-picture-o:before,.fa-file-image-o:before{content:"\f1c5"}.fa-file-zip-o:before,.fa-file-archive-o:before{content:"\f1c6"}.fa-file-sound-o:before,.fa-file-audio-o:before{content:"\f1c7"}.fa-file-movie-o:before,.fa-file-video-o:before{content:"\f1c8"}.fa-file-code-o:before{content:"\f1c9"}.fa-vine:before{content:"\f1ca"}.fa-codepen:before{content:"\f1cb"}.fa-jsfiddle:before{content:"\f1cc"}.fa-life-bouy:before,.fa-life-saver:before,.fa-support:before,.fa-life-ring:before{content:"\f1cd"}.fa-circle-o-notch:before{content:"\f1ce"}.fa-ra:before,.fa-rebel:before{content:"\f1d0"}.fa-ge:before,.fa-empire:before{content:"\f1d1"}.fa-git-square:before{content:"\f1d2"}.fa-git:before{content:"\f1d3"}.fa-hacker-news:before{content:"\f1d4"}.fa-tencent-weibo:before{content:"\f1d5"}.fa-qq:before{content:"\f1d6"}.fa-wechat:before,.fa-weixin:before{content:"\f1d7"}.fa-send:before,.fa-paper-plane:before{content:"\f1d8"}.fa-send-o:before,.fa-paper-plane-o:before{content:"\f1d9"}.fa-history:before{content:"\f1da"}.fa-circle-thin:before{content:"\f1db"}.fa-header:before{content:"\f1dc"}.fa-paragraph:before{content:"\f1dd"}.fa-sliders:before{content:"\f1de"}.fa-share-alt:before{content:"\f1e0"}.fa-share-alt-square:before{content:"\f1e1"}.fa-bomb:before{content:"\f1e2"}</style>
+
+        <!-- Custom CSS -->
+        <style>:host {
+    font-family: 'proxima_nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: #333;
+    font-size: 14px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-touch-callout: none;
+    padding: 0;
+    margin: 0;
+    background-color: #1c1c1e;
+    height: 400px;
+}
+
+#artwork {
+    text-align: center;
+    margin: 25px 0 15px 0;
+}
+
+#player {
+    margin: 0 auto;
+    width: 210px;
+    color: #dfe0e6;
+    text-align: center;
+}
+
+#player h3 {
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 19px;
+    margin: 0;
+}
+
+#player h4 {
+    font-weight: 100;
+    font-size: 12px;
+    line-height: 16px;
+    margin: 0;
+}
+
+#progress {
+    margin: 0 auto;
+    width: 240px;
+}
+
+#progress paper-slider::shadow #sliderKnobInner {
+    background-color: #ffffff;
+}
+
+#progress paper-slider::shadow #sliderBar::shadow #activeProgress {
+    background-color: #84bd00;
+}
+
+#progress paper-slider::shadow #sliderBar::shadow #progressContainer {
+    background-color: #3e3e40;
+}
+
+#progress paper-slider::shadow #sliderKnob.expand:not(.pin) > #sliderKnobInner {
+    width: 20px;
+    height: 20px;
+}
+#progress #track-current {
+    float: left;
+    color: #88898c;
+    font-size: 12px;
+    left: 16px;
+    position: relative;
+}
+
+#progress #track-length {
+    float: right;
+    color: #88898c;
+    font-size: 12px;
+    right: 16px;
+    position: relative;
+}
+
+#controls {
+    margin: 10px auto 0 auto;
+    width: 240px;
+}
+
+#playback {
+    margin: 0 auto;
+}
+
+#playback button {
+    height: 40px;
+    width: 40px;
+    max-height: 40px;
+    margin: 5px 0;
+    padding: 0;
+    background: rgba(0, 0, 0, 0);
+    border-color: rgba(0, 0, 0, 0);
+    font-weight: 400;
+    cursor: pointer;
+    outline: none;
+}
+
+#playback button i:hover {
+    color: #ffffff;
+}
+
+#playback #play-pause {
+    height: 52px;
+    width: 52px;
+    max-height: 52px;
+    max-width: 52px;
+    display: block;
+    border: 1px solid #88898c;
+    border-radius: 50%;
+    padding-left: 5px;
+    margin: 0 20px;
+}
+
+#playback #play-pause:hover {
+    border-color: #84bd00;
+}
+
+#playback button i {
+    color: #dfe0e6;
+    text-align: center;
+}
+
+</style>
+
+
+        <div id="now-playing" vertical="" layout="">
+
+            <div id="artwork">
+                <img style="width: 180px; height: 180px" src="{{spotify.track.artwork}}">
+            </div>
+
+            <div id="player">
+                <div id="track-name" class="marquee">
+                    <span><h3>{{spotify.track.title}}</h3></span>
+                </div>
+                <div id="artist-name" class="marquee">
+                    <span><h4>{{spotify.track.artist}}</h4></span>
+                </div>
+            </div>
+
+            <div id="progress">
+                <paper-slider id="progress" value="0"></paper-slider>
+                <div>
+                    <span id="track-current">{{spotify.track.time}}</span>
+                    <span id="track-length">{{spotify.track.length}}</span>
+                </div>
+            </div>
+
+            <div id="controls">
+                <div id="playback" horizontal="" layout="" center="" center-justified="">
+                    <button id="previous"><i class="fa fa-step-backward fa-2x"></i></button>
+                    <button id="play-pause">
+                        <i class="fa fa-play fa-2x" hidden?="{{spotify.player.status == &apos;playing&apos;}}"></i>
+                        <i class="fa fa-pause fa-2x" style="margin-left: -6px; font-size: 20px;" hidden?="{{spotify.player.status == &apos;paused&apos;}}"></i>
+                    </button>
+                    <button id="next"><i class="fa fa-step-forward fa-2x"></i></button>
+                </div>
+            </div>
+
+        </div>
+
+    </template>
+
+    
+
+</polymer-element></div>
+    <div hidden>
+<!--
+Copyright (c) 2014 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!--
+`core-list` displays a virtual, 'infinite' list. The template inside the 
+`core-list` element represents the dom to create for each list item. The
+`data` property specifies an array of list item data. The `height` property
+represents the height of a list item.
+
+By default, the list supports selection via tapping. Styling the selection 
+should be done via binding. The `selectedProperty` property is set on the 
+list view data for each selected item.
+
+`core-list` manages a viewport of data based on the current scroll position.
+For performance reasons, not every item in the list is rendered at once.
+
+    <core-list data="{{data}}" height="80">
+      <template>
+        <div class="{{ {selected: selected} | tokenList }}">List row: {{index}}</div>
+      </template>
+    </core-list>
+
+@group Polymer Core Elements
+@element core-list
+-->
+
+
+
+<polymer-element name="core-list" on-tap="{{tapHandler}}" assetpath="bower_components/core-list/">
+<template>
+  <core-selection id="selection" multi="{{multi}}" on-core-select="{{selectedHandler}}"></core-selection>
+  <style>:host {
+  display: block;
+  overflow: auto;
+  /*-webkit-overflow-scrolling: touch;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);*/
+}
+
+.core-list-viewport > * {
+  overflow: hidden;
+}
+
+.core-list-viewport.horizontal {
+  height: 100%;
+  white-space: nowrap;
+}
+
+.core-list-viewport.horizontal > * {
+  display: inline-block;
+}</style>
+  <div id="viewport" class="core-list-viewport"><content></content></div>
+</template>
+
+</polymer-element>
+
+
+<polymer-element name="events-list" assetpath="elements/events-list/">
+    <template>
+
+        <!-- Custom CSS -->
+        <style>:host {
+    width: 100%;
+    height: 100%;
+    background: #1c1c1e;
+    font-family: 'proxima_nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #333333;
+    overflow: auto;
+}
+
+#wrap {
+    width: 90%;
+    height: 100%;
+    margin: 0 auto;
+    overflow: visible;
+}
+
+core-list {
+    overflow: visible;
+}
+
+core-list /deep/ #viewport {
+    margin-bottom: 20px;
+}
+
+.header-title {
+    margin: 20px 0;
+    color: #dfe0e6;
+    text-transform: uppercase;
+}
+
+.item {
+    box-sizing: border-box;
+    height: 90px;
+    border-bottom: 1px solid #dfe0e6;
+    padding: 4px;
+    cursor: default;
+    background-color: white;
+    overflow: hidden;
+}
+
+.item:hover {
+    background: silver;
+}
+
+.message {
+    padding-left: 77px;
+    padding-top: 8px;
+    line-height: 167%;
+    background-repeat: no-repeat;
+    background-position: 10px 10px;
+    background-size: 60px;
+    font-size: 12px;
+}
+
+.uri {
+    color: #333333;
+    margin-top: 5px;
+}
+
+.title {
+    display: inline;
+    color: #333333;
+}</style>
+
+
+        <div id="wrap" vertical="" layout="">
+            <span class="header-title">Upcoming Event</span>
+
+            <span class="header-title">Pending Events</span>
+            <core-list id="list" data="{{data}}" height="90">
+                <template>
+                    <div class="item {{ {selected: selected} | tokenList }}">
+                        <div class="message" style="background-image: url({{image}});">
+                            <div class="title"><em><strong>{{title}}</strong> by {{artist}}</em></div>
+                            <div class="uri">{{uri}}</div>
+                            <div class="event">{{startTime}} [{{startEvent}}] &#x21D2; {{endTime}} [{{endEvent}}]</div>
+                        </div>
+                    </div>
+                </template>
+            </core-list>
+        </div>
+
+    </template>
+
+    
+
+</polymer-element></div>
+
+    <!-- Extension JS -->
+    <script src="js/popup.js"></script>
+
+    <!-- Custom CSS -->
+    <link href="css/popup.css" rel="stylesheet">
+
+</head>
+<body unresolved="" touch-action="auto" style="width: 400px">
+
+    <!-- Tabs -->
+    <paper-tabs valueattr="name" selected="now-playing" self-end="">
+        <paper-tab name="now-playing" active="">Now Playing</paper-tab>
+        <paper-tab name="events">Events</paper-tab>
+        <paper-tab id="about-tab" name="about">About</paper-tab>
+    </paper-tabs>
+
+    <!-- Pages -->
+    <core-pages valueattr="id" selected="now-playing" notap="">
+
+        <!-- Now playing -->
+        <spotify-player id="now-playing"></spotify-player>
+
+        <!-- Events -->
+        <events-list id="events"></events-list>
+
+        <!-- About -->
+        <div id="about" vertical="" layout="" center="" center-justified="">
+            <img class="logo" src="icons/logo_green.png">
+            <div class="info"><strong>Version</strong> 0.1</div>
+
+            <paper-toast id="toast-about" text="Service Status: Unavailable"></paper-toast>
+        </div>
+
+    </core-pages>
+
+<script src="build.js"></script></body>
+</html>

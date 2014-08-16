@@ -1,0 +1,74 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+
+<polymer-element name="spotify-player">
+    <template>
+
+        <!-- Fontawesome icons -->
+        <link href="font-awesome.min.css" rel="stylesheet">
+
+        <!-- Custom CSS -->
+        <link href="spotify-player.css" rel="stylesheet">
+
+
+        <div id="now-playing" vertical layout>
+
+            <div id="artwork">
+                <img style="width: 180px; height: 180px" src="{{spotify.track.artwork}}" />
+            </div>
+
+            <div id="player">
+                <div id="track-name" class="marquee">
+                    <span><h3>{{spotify.track.title}}</h3></span>
+                </div>
+                <div id="artist-name" class="marquee">
+                    <span><h4>{{spotify.track.artist}}</h4></span>
+                </div>
+            </div>
+
+            <div id="progress">
+                <paper-slider id="progress" value="0"></paper-slider>
+                <div>
+                    <span id="track-current">{{spotify.track.time}}</span>
+                    <span id="track-length">{{spotify.track.length}}</span>
+                </div>
+            </div>
+
+            <div id="controls">
+                <div id="playback" horizontal layout center center-justified>
+                    <button id="previous"><i class="fa fa-step-backward fa-2x"></i></button>
+                    <button id="play-pause">
+                        <i class="fa fa-play fa-2x" hidden?="{{spotify.player.status == 'playing'}}"></i>
+                        <i class="fa fa-pause fa-2x" style="margin-left: -6px; font-size: 20px;" hidden?="{{spotify.player.status == 'paused'}}"></i>
+                    </button>
+                    <button id="next"><i class="fa fa-step-forward fa-2x"></i></button>
+                </div>
+            </div>
+
+        </div>
+
+    </template>
+
+    <script>
+        Polymer('spotify-player', {
+            spotify: null,
+
+            observe: {
+                'spotify.track.time': 'updateProgress',
+                'spotify.track.length': 'updateProgress'
+            },
+
+            updateProgress: function(oldValue, newValue)
+            {
+                var time = this.spotify.track.time.split(':');
+                var timeSeconds = (+time[0]) * 60 + (+time[1]);
+                var length = this.spotify.track.length.split(':');
+                var lengthSeconds = (+length[0]) * 60 + (+length[1]);
+
+                if (timeSeconds == 0) { this.$.progress.value = 0; this.$.progress.max = 1; }
+                else { this.$.progress.value = timeSeconds; this.$.progress.max = lengthSeconds; }
+            }
+        });
+    </script>
+
+</polymer-element>

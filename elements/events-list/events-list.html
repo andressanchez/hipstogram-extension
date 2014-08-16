@@ -1,0 +1,55 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/core-list/core-list.html">
+
+<polymer-element name="events-list">
+    <template>
+
+        <!-- Custom CSS -->
+        <link href="events-list.css" rel="stylesheet">
+
+
+        <div id="wrap" vertical layout>
+            <span class="header-title">Upcoming Event</span>
+
+            <span class="header-title">Pending Events</span>
+            <core-list id="list" data="{{data}}" height="90">
+                <template>
+                    <div class="item {{ {selected: selected} | tokenList }}">
+                        <div class="message" style="background-image: url({{image}});">
+                            <div class="title"><em><strong>{{title}}</strong> by {{artist}}</em></div>
+                            <div class="uri">{{uri}}</div>
+                            <div class="event">{{startTime}} [{{startEvent}}] &#8658; {{endTime}} [{{endEvent}}]</div>
+                        </div>
+                    </div>
+                </template>
+            </core-list>
+        </div>
+
+    </template>
+
+    <script>
+        Polymer('events-list', {
+            ready: function() {
+                this.data = this.generateData();
+            },
+            generateData: function() {
+                var data = [];
+                for (var i=0; i<5; i++) {
+                    data.push({
+                        index: i,
+                        uri: "spotify:track:7skutlFh5m9qOpfgZMSenH",
+                        artist: "Sigur Rós",
+                        title: "Valtari",
+                        startTime: '0:00',
+                        startEvent: 'track-changed',
+                        endTime: '3:54',
+                        endEvent: 'track-paused',
+                        image:  'elements/spotify-player/images/3a0f72f604b4f7bcb06fad0f0ab8e00ae6623dd7.jpg'
+                    });
+                }
+                return data;
+            }
+        });
+    </script>
+
+</polymer-element>

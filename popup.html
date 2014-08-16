@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+    <!-- Polymer components -->
+    <script src="bower_components/platform/platform.js"></script>
+    <link rel="import" href="bower_components/font-roboto/roboto.html">
+    <link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+    <link rel="import" href="bower_components/core-pages/core-pages.html">
+    <link rel="import" href="bower_components/paper-toast/paper-toast.html">
+    <link rel="import" href="elements/spotify-player/spotify-player.html">
+    <link rel="import" href="elements/events-list/events-list.html">
+
+    <!-- Extension JS -->
+    <script src="js/popup.js"></script>
+
+    <!-- Custom CSS -->
+    <link href="css/popup.css" rel="stylesheet">
+
+</head>
+<body unresolved touch-action="auto" style="width: 400px">
+
+    <!-- Tabs -->
+    <paper-tabs valueAttr="name" selected="now-playing" self-end>
+        <paper-tab name="now-playing" active>Now Playing</paper-tab>
+        <paper-tab name="events">Events</paper-tab>
+        <paper-tab id="about-tab" name="about">About</paper-tab>
+    </paper-tabs>
+
+    <!-- Pages -->
+    <core-pages valueAttr="id" selected="now-playing" notap>
+
+        <!-- Now playing -->
+        <spotify-player id="now-playing"></spotify-player>
+
+        <!-- Events -->
+        <events-list id="events"></events-list>
+
+        <!-- About -->
+        <div id="about" vertical layout center center-justified>
+            <img class="logo" src="icons/logo_green.png" />
+            <div class="info"><strong>Version</strong> 0.1</div>
+
+            <paper-toast id="toast-about" text="Service Status: Unavailable"></paper-toast>
+        </div>
+
+    </core-pages>
+
+</body>
+</html>
