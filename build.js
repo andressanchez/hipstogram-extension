@@ -3623,14 +3623,29 @@ Polymer('core-style', {
 ;
 
         Polymer('events-list', {
+
+            data: null,
+            upcoming: null,
+            spotify: null,
+
             ready: function() {
                 this.data = this.generateData();
+                this.upcoming = this.generateUpcoming();
             },
+
+            generateUpcoming: function() {
+                var data = {
+                    startTime: '0:00',
+                    startEvent: 'track-changed',
+                    endEvent: 'track-playing'
+                };
+                return data;
+            },
+
             generateData: function() {
                 var data = [];
                 for (var i=0; i<5; i++) {
                     data.push({
-                        index: i,
                         uri: "spotify:track:7skutlFh5m9qOpfgZMSenH",
                         artist: "Sigur Rós",
                         title: "Valtari",

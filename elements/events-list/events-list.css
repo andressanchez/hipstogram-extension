@@ -11,12 +11,13 @@
 #wrap {
     width: 90%;
     height: 100%;
-    margin: 0 auto;
+    margin: 20px auto 0 auto;
     overflow: visible;
 }
 
 core-list {
     overflow: visible;
+    margin-top: 20px;
 }
 
 core-list /deep/ #viewport {
@@ -24,9 +25,17 @@ core-list /deep/ #viewport {
 }
 
 .header-title {
-    margin: 20px 0;
     color: #dfe0e6;
     text-transform: uppercase;
+}
+
+.upcoming {
+    height: 81px;
+    border-bottom: 1px solid #dfe0e6;
+    padding: 4px;
+    background-color: white;
+    overflow: hidden;
+    margin: 20px 0;
 }
 
 .item {

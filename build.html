@@ -2738,12 +2738,13 @@ For performance reasons, not every item in the list is rendered at once.
 #wrap {
     width: 90%;
     height: 100%;
-    margin: 0 auto;
+    margin: 20px auto 0 auto;
     overflow: visible;
 }
 
 core-list {
     overflow: visible;
+    margin-top: 20px;
 }
 
 core-list /deep/ #viewport {
@@ -2751,9 +2752,17 @@ core-list /deep/ #viewport {
 }
 
 .header-title {
-    margin: 20px 0;
     color: #dfe0e6;
     text-transform: uppercase;
+}
+
+.upcoming {
+    height: 81px;
+    border-bottom: 1px solid #dfe0e6;
+    padding: 4px;
+    background-color: white;
+    overflow: hidden;
+    margin: 20px 0;
 }
 
 .item {
@@ -2791,21 +2800,32 @@ core-list /deep/ #viewport {
 }</style>
 
 
-        <div id="wrap" vertical="" layout="">
-            <span class="header-title">Upcoming Event</span>
-
-            <span class="header-title">Pending Events</span>
-            <core-list id="list" data="{{data}}" height="90">
-                <template>
-                    <div class="item {{ {selected: selected} | tokenList }}">
-                        <div class="message" style="background-image: url({{image}});">
-                            <div class="title"><em><strong>{{title}}</strong> by {{artist}}</em></div>
-                            <div class="uri">{{uri}}</div>
-                            <div class="event">{{startTime}} [{{startEvent}}] &#x21D2; {{endTime}} [{{endEvent}}]</div>
-                        </div>
+        <div id="wrap">
+            <div hidden?="{{upcoming == null}}">
+                <span class="header-title">Upcoming Event</span>
+                <div class="upcoming {{ {selected: selected} | tokenList }}">
+                    <div class="message" style="background-image: url({{spotify.track.artwork}});">
+                        <div class="title"><em><strong>{{spotify.track.title}}</strong> by {{spotify.track.artist}}</em></div>
+                        <div class="uri">{{spotify.track.uri}}</div>
+                        <div class="event">{{upcoming.startTime}} [{{upcoming.startEvent}}] &#x21D2; {{spotify.track.time}} [{{upcoming.endEvent}}]</div>
                     </div>
-                </template>
-            </core-list>
+                </div>
+            </div>
+
+            <div hidden?="{{data == null || data.length == 0}}">
+                <span class="header-title">Pending Events</span>
+                <core-list data="{{data}}" height="90">
+                    <template>
+                        <div class="item {{ {selected: selected} | tokenList }}">
+                            <div class="message" style="background-image: url({{image}});">
+                                <div class="title"><em><strong>{{title}}</strong> by {{artist}}</em></div>
+                                <div class="uri">{{uri}}</div>
+                                <div class="event">{{startTime}} [{{startEvent}}] &#x21D2; {{endTime}} [{{endEvent}}]</div>
+                            </div>
+                        </div>
+                    </template>
+                </core-list>
+            </div>
         </div>
 
     </template>

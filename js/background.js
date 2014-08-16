@@ -1,6 +1,6 @@
 /**
  *
-
+ */
 
 chrome.tabs.query({ url: "*://play.spotify.com/*" }, function(tabs)
 {
@@ -9,29 +9,18 @@ chrome.tabs.query({ url: "*://play.spotify.com/*" }, function(tabs)
     console.log("Injecting JS in " + current.url + "!");
     chrome.tabs.executeScript(current.id, {file: "js/spotify.injection.js"}, function(content_result) {});
     console.log("Injection completed!");
-}); */
+});
 
 /**
  *
- * @type {{track: {title: string, artist: string, time: string, length: string}}}
+ * @type {{track: {uri: string, title: string, artist: string, time: string, length: string, artwork: string}, player: {status: string}}}
  */
-
-/*var spotify =
-{
-    track:
-    {
-        title: "Untitled",
-        artist: "Unknown",
-        time: "0:00",
-        length: "0:00",
-        artwork: null
-    }
-};*/
 
 var spotify =
 {
     track:
     {
+        uri: "spotify:track:7skutlFh5m9qOpfgZMSenH",
         title: "Valtari",
         artist: "Sigur Rós",
         time: "3:28",

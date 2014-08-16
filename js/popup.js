@@ -8,10 +8,11 @@ document.addEventListener('polymer-ready', function()
     });
 
     // Get Spotify object from background script
-    document.querySelector("spotify-player").spotify =
+    /*var spotify =
     {
         track:
         {
+            uri: "spotify:track:7skutlFh5m9qOpfgZMSenH",
             title: "Valtari",
             artist: "Sigur Rós",
             time: "3:28",
@@ -22,7 +23,10 @@ document.addEventListener('polymer-ready', function()
         {
             status: "playing" // Either "playing" or "paused"
         }
-    };//chrome.extension.getBackgroundPage().spotify;
+    };*/
+
+    document.querySelector("spotify-player").spotify = chrome.extension.getBackgroundPage().spotify;
+    document.querySelector("events-list").spotify = chrome.extension.getBackgroundPage().spotify;
 
     // Set the event to show the about toast
     document.querySelector('#about-tab').onclick = showAboutToast;
