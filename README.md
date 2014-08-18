@@ -1,4 +1,4 @@
-hipstogram-extension
+Hipstogram Extension
 ====================
 
-Use this extension to know your listening behavior when you use Spotify!
+Use this extension to know more about your use of Spotify!

@@ -1,18 +1,34 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/core-list/core-list.html">
+<!--
+A list of Events, including an upcoming event, pending events and committed events
+
+##### Example
+
+    <events-list></events-list>
+
+@element events-list
+@blurb A list of Events, including an upcoming event, pending events and committed events
+@status alpha
+@homepage https://github.com/andressanchez/hisptogram-extension
+-->
+
+<link rel="import" href="../../components/polymer/polymer.html">
+<link rel="import" href="../../components/core-list/core-list.html">
 
 <polymer-element name="events-list">
+
     <template>
 
         <!-- Custom CSS -->
         <link href="events-list.css" rel="stylesheet">
 
-
+        <!-- Wrapper -->
         <div id="wrap">
+
+            <!-- Upcoming Event (if there is one) -->
             <div hidden?="{{spotify.events.upcoming == null}}">
                 <span class="header-title">Upcoming Event</span>
                 <div class="upcoming {{ {selected: selected} | tokenList }}">
-                    <div class="message" style="background-image: url({{spotify.events.upcoming.artwork}});">
+                    <div class="message" style="background-image: url({{spotify.events.upcoming.cover}});">
                         <div class="title"><em><strong>{{spotify.events.upcoming.title}}</strong> by {{spotify.events.upcoming.artist}}</em></div>
                         <div class="uri">{{spotify.events.upcoming.uri}}</div>
                         <div class="event">{{spotify.events.upcoming.startTime}} [{{spotify.events.upcoming.startEvent}}] &#8658; {{spotify.events.upcoming.endTime}} [{{spotify.events.upcoming.endEvent}}]</div>
@@ -20,18 +36,20 @@
                 </div>
             </div>
 
+            <!-- In case, there is none -->
             <div hidden?="{{spotify.events.upcoming != null}}">
             <div class="empty">
                 Open <strong>Spotify Play</strong> to generate new events.
             </div>
             </div>
 
+            <!-- Pending Events -->
             <div hidden?="{{spotify.events.pending == null || spotify.events.pending.length == 0}}">
                 <span class="header-title">Pending Events</span>
                 <core-list data="{{spotify.events.pending}}" height="90">
                     <template>
                         <div class="item {{ {selected: selected} | tokenList }}">
-                            <div class="message" style="background-image: url({{artwork}});">
+                            <div class="message" style="background-image: url({{cover}});">
                                 <div class="title"><em><strong>{{title}}</strong> by {{artist}}</em></div>
                                 <div class="uri">{{uri}}</div>
                                 <div class="event">{{startTime}} [{{startEvent}}] &#8658; {{endTime}} [{{endEvent}}]</div>
@@ -46,6 +64,13 @@
 
     <script>
         Polymer('events-list', {
+
+            /**
+             * `spotify` is the reference to the Spotify Object
+             *
+             * @attribute spotify
+             * @type JSON
+             */
             spotify: null
         });
     </script>

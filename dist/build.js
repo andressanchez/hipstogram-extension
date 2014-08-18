@@ -3240,14 +3240,29 @@ Polymer('core-style', {
 ;
 
         Polymer('spotify-player', {
+
+            /**
+             * `spotify` is the reference to the Spotify Object
+             *
+             * @attribute spotify
+             * @type JSON
+             */
             spotify: null,
 
+            /**
+             * Update Progress Bar and Player buttons
+             */
             observe: {
                 'spotify.track.time': 'updateProgress',
                 'spotify.track.length': 'updateProgress',
                 'spotify.player.status': 'updateStatus'
             },
 
+            /**
+             * Update Progress Bar
+             * @param oldValue Old time or length
+             * @param newValue New time or length
+             */
             updateProgress: function(oldValue, newValue)
             {
                 var time = this.spotify.track.time.split(':');
@@ -3259,6 +3274,11 @@ Polymer('core-style', {
                 else { this.$.progress.value = timeSeconds; this.$.progress.max = lengthSeconds; }
             },
 
+            /**
+             * Update Player buttons
+             * @param oldValue Old Player status
+             * @param newValue New Player status
+             */
             updateStatus: function (oldValue, newValue)
             {
                 if (newValue == 'playing') this.shadowRoot.querySelector("#play-pause > i.fa-play").hidden = true;
@@ -3267,18 +3287,27 @@ Polymer('core-style', {
                 else this.shadowRoot.querySelector("#play-pause > i.fa-pause").hidden = false;
             },
 
+            /**
+             * Play/Pause Spotify Player
+             */
             playAction: function(event, detail, sender)
             {
                 playPauseTrack(); // TODO: Change call to global function!
                 console.log("playAction!");
             },
 
+            /**
+             * Change to the previous track
+             */
             previousAction: function(event, detail, sender)
             {
                 previousTrack(); // TODO: Change call to global function!
                 console.log("previousTrack!");
             },
 
+            /**
+             * Change to the next track
+             */
             nextAction: function(event, detail, sender)
             {
                 nextTrack(); // TODO: Change call to global function!
@@ -3650,6 +3679,13 @@ Polymer('core-style', {
 ;
 
         Polymer('events-list', {
+
+            /**
+             * `spotify` is the reference to the Spotify Object
+             *
+             * @attribute spotify
+             * @type JSON
+             */
             spotify: null
         });
     

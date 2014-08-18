@@ -7,59 +7,12 @@ document.addEventListener('polymer-ready', function()
         pages.selected = tabs.selected;
     });
 
-    // Get Spotify object from background script
-    /*var spotify =
-    {
-        track:
-        {
-            uri: "spotify:track:7skutlFh5m9qOpfgZMSenH",
-            title: "Valtari",
-            artist: "Sigur Rós",
-            time: "3:28",
-            length: "8:18",
-            artwork: "elements/spotify-player/images/3a0f72f604b4f7bcb06fad0f0ab8e00ae6623dd7.jpg"
-        },
-        player:
-        {
-            status: "playing" // Either "playing" or "paused"
-        }
-    };*/
-
+    // Get Spotify Object from the background script
     document.querySelector("spotify-player").spotify = chrome.extension.getBackgroundPage().spotify;
     document.querySelector("events-list").spotify = chrome.extension.getBackgroundPage().spotify;
 
-    // Set the event to show the about toast
+    // Set the event to show a toast in the page 'About'
     document.querySelector('#about-tab').onclick = showAboutToast;
 });
 
-/**
- *
- */
-function playPauseTrack()
-{
-    chrome.extension.getBackgroundPage().playPauseTrack();
-}
-
-/**
- *
- */
-function previousTrack()
-{
-    chrome.extension.getBackgroundPage().previousTrack();
-}
-
-/**
- *
- */
-function nextTrack()
-{
-    chrome.extension.getBackgroundPage().nextTrack();
-}
-
-/**
- *
- */
-function showAboutToast()
-{
-    document.querySelector('paper-toast').show();
-}
+function showAboutToast() { document.querySelector('paper-toast').show(); }

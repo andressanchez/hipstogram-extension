@@ -1,7 +1,21 @@
-<link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+<!--
+A Spotify Player which graphically represents a Spotify Object
+
+##### Example
+
+    <spotify-player></spotify-player>
+
+@element spotify-player
+@blurb A Spotify Player which graphically represents a Spotify Object
+@status alpha
+@homepage https://github.com/andressanchez/hisptogram-extension
+-->
+
+<link rel="import" href="../../components/polymer/polymer.html">
+<link rel="import" href="../../components/paper-slider/paper-slider.html">
 
 <polymer-element name="spotify-player">
+
     <template>
 
         <!-- Fontawesome icons -->
@@ -10,13 +24,15 @@
         <!-- Custom CSS -->
         <link href="spotify-player.css" rel="stylesheet">
 
-
+        <!-- Wrapper -->
         <div id="now-playing" vertical layout>
 
-            <div id="artwork">
-                <img style="width: 180px; height: 180px" src="{{spotify.track.artwork}}" />
+            <!-- Cover -->
+            <div id="cover">
+                <img style="width: 180px; height: 180px" src="{{spotify.track.cover}}" />
             </div>
 
+            <!-- Title and Artist -->
             <div id="player">
                 <div id="track-name" class="marquee">
                     <span><h3>{{spotify.track.title}}</h3></span>
@@ -26,6 +42,7 @@
                 </div>
             </div>
 
+            <!-- Progress bar -->
             <div id="progress">
                 <paper-slider id="progress" value="0"></paper-slider>
                 <div>
@@ -34,6 +51,7 @@
                 </div>
             </div>
 
+            <!-- Controls -->
             <div id="controls">
                 <div id="playback" horizontal layout center center-justified>
                     <button id="previous" on-click="{{previousAction}}"><i class="fa fa-step-backward fa-2x"></i></button>
@@ -51,14 +69,29 @@
 
     <script>
         Polymer('spotify-player', {
+
+            /**
+             * `spotify` is the reference to the Spotify Object
+             *
+             * @attribute spotify
+             * @type JSON
+             */
             spotify: null,
 
+            /**
+             * Update Progress Bar and Player buttons
+             */
             observe: {
                 'spotify.track.time': 'updateProgress',
                 'spotify.track.length': 'updateProgress',
                 'spotify.player.status': 'updateStatus'
             },
 
+            /**
+             * Update Progress Bar
+             * @param oldValue Old time or length
+             * @param newValue New time or length
+             */
             updateProgress: function(oldValue, newValue)
             {
                 var time = this.spotify.track.time.split(':');
@@ -70,6 +103,11 @@
                 else { this.$.progress.value = timeSeconds; this.$.progress.max = lengthSeconds; }
             },
 
+            /**
+             * Update Player buttons
+             * @param oldValue Old Player status
+             * @param newValue New Player status
+             */
             updateStatus: function (oldValue, newValue)
             {
                 if (newValue == 'playing') this.shadowRoot.querySelector("#play-pause > i.fa-play").hidden = true;
@@ -78,18 +116,27 @@
                 else this.shadowRoot.querySelector("#play-pause > i.fa-pause").hidden = false;
             },
 
+            /**
+             * Play/Pause Spotify Player
+             */
             playAction: function(event, detail, sender)
             {
                 playPauseTrack(); // TODO: Change call to global function!
                 console.log("playAction!");
             },
 
+            /**
+             * Change to the previous track
+             */
             previousAction: function(event, detail, sender)
             {
                 previousTrack(); // TODO: Change call to global function!
                 console.log("previousTrack!");
             },
 
+            /**
+             * Change to the next track
+             */
             nextAction: function(event, detail, sender)
             {
                 nextTrack(); // TODO: Change call to global function!
