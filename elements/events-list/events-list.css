@@ -53,13 +53,25 @@ core-list /deep/ #viewport {
 }
 
 .message {
-    padding-left: 77px;
-    padding-top: 8px;
+     padding-left: 77px;
+     padding-top: 8px;
+     line-height: 167%;
+     background-repeat: no-repeat;
+     background-position: 10px 10px;
+     background-size: 60px;
+     font-size: 12px;
+ }
+
+.empty {
+    padding: 8px;
+    padding-left: 12px;
     line-height: 167%;
-    background-repeat: no-repeat;
-    background-position: 10px 10px;
     background-size: 60px;
     font-size: 12px;
+    border-bottom: 1px solid #dfe0e6;
+    background-color: white;
+    overflow: auto;
+    margin: 20px 0;
 }
 
 .uri {

@@ -3244,7 +3244,8 @@ Polymer('core-style', {
 
             observe: {
                 'spotify.track.time': 'updateProgress',
-                'spotify.track.length': 'updateProgress'
+                'spotify.track.length': 'updateProgress',
+                'spotify.player.status': 'updateStatus'
             },
 
             updateProgress: function(oldValue, newValue)
@@ -3256,6 +3257,32 @@ Polymer('core-style', {
 
                 if (timeSeconds == 0) { this.$.progress.value = 0; this.$.progress.max = 1; }
                 else { this.$.progress.value = timeSeconds; this.$.progress.max = lengthSeconds; }
+            },
+
+            updateStatus: function (oldValue, newValue)
+            {
+                if (newValue == 'playing') this.shadowRoot.querySelector("#play-pause > i.fa-play").hidden = true;
+                else this.shadowRoot.querySelector("#play-pause > i.fa-play").hidden = false;
+                if (newValue == 'pause') this.shadowRoot.querySelector("#play-pause > i.fa-pause").hidden = true;
+                else this.shadowRoot.querySelector("#play-pause > i.fa-pause").hidden = false;
+            },
+
+            playAction: function(event, detail, sender)
+            {
+                playPauseTrack(); // TODO: Change call to global function!
+                console.log("playAction!");
+            },
+
+            previousAction: function(event, detail, sender)
+            {
+                previousTrack(); // TODO: Change call to global function!
+                console.log("previousTrack!");
+            },
+
+            nextAction: function(event, detail, sender)
+            {
+                nextTrack(); // TODO: Change call to global function!
+                console.log("nextAction!");
             }
         });
     ;
@@ -3623,40 +3650,6 @@ Polymer('core-style', {
 ;
 
         Polymer('events-list', {
-
-            data: null,
-            upcoming: null,
-            spotify: null,
-
-            ready: function() {
-                this.data = this.generateData();
-                this.upcoming = this.generateUpcoming();
-            },
-
-            generateUpcoming: function() {
-                var data = {
-                    startTime: '0:00',
-                    startEvent: 'track-changed',
-                    endEvent: 'track-playing'
-                };
-                return data;
-            },
-
-            generateData: function() {
-                var data = [];
-                for (var i=0; i<5; i++) {
-                    data.push({
-                        uri: "spotify:track:7skutlFh5m9qOpfgZMSenH",
-                        artist: "Sigur Rós",
-                        title: "Valtari",
-                        startTime: '0:00',
-                        startEvent: 'track-changed',
-                        endTime: '3:54',
-                        endEvent: 'track-paused',
-                        image:  'elements/spotify-player/images/3a0f72f604b4f7bcb06fad0f0ab8e00ae6623dd7.jpg'
-                    });
-                }
-                return data;
-            }
+            spotify: null
         });
     

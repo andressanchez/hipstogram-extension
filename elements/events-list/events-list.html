@@ -9,23 +9,29 @@
 
 
         <div id="wrap">
-            <div hidden?="{{upcoming == null}}">
+            <div hidden?="{{spotify.events.upcoming == null}}">
                 <span class="header-title">Upcoming Event</span>
                 <div class="upcoming {{ {selected: selected} | tokenList }}">
-                    <div class="message" style="background-image: url({{spotify.track.artwork}});">
-                        <div class="title"><em><strong>{{spotify.track.title}}</strong> by {{spotify.track.artist}}</em></div>
-                        <div class="uri">{{spotify.track.uri}}</div>
-                        <div class="event">{{upcoming.startTime}} [{{upcoming.startEvent}}] &#8658; {{spotify.track.time}} [{{upcoming.endEvent}}]</div>
+                    <div class="message" style="background-image: url({{spotify.events.upcoming.artwork}});">
+                        <div class="title"><em><strong>{{spotify.events.upcoming.title}}</strong> by {{spotify.events.upcoming.artist}}</em></div>
+                        <div class="uri">{{spotify.events.upcoming.uri}}</div>
+                        <div class="event">{{spotify.events.upcoming.startTime}} [{{spotify.events.upcoming.startEvent}}] &#8658; {{spotify.events.upcoming.endTime}} [{{spotify.events.upcoming.endEvent}}]</div>
                     </div>
                 </div>
             </div>
 
-            <div hidden?="{{data == null || data.length == 0}}">
+            <div hidden?="{{spotify.events.upcoming != null}}">
+            <div class="empty">
+                Open <strong>Spotify Play</strong> to generate new events.
+            </div>
+            </div>
+
+            <div hidden?="{{spotify.events.pending == null || spotify.events.pending.length == 0}}">
                 <span class="header-title">Pending Events</span>
-                <core-list data="{{data}}" height="90">
+                <core-list data="{{spotify.events.pending}}" height="90">
                     <template>
                         <div class="item {{ {selected: selected} | tokenList }}">
-                            <div class="message" style="background-image: url({{image}});">
+                            <div class="message" style="background-image: url({{artwork}});">
                                 <div class="title"><em><strong>{{title}}</strong> by {{artist}}</em></div>
                                 <div class="uri">{{uri}}</div>
                                 <div class="event">{{startTime}} [{{startEvent}}] &#8658; {{endTime}} [{{endEvent}}]</div>
@@ -40,41 +46,7 @@
 
     <script>
         Polymer('events-list', {
-
-            data: null,
-            upcoming: null,
-            spotify: null,
-
-            ready: function() {
-                this.data = this.generateData();
-                this.upcoming = this.generateUpcoming();
-            },
-
-            generateUpcoming: function() {
-                var data = {
-                    startTime: '0:00',
-                    startEvent: 'track-changed',
-                    endEvent: 'track-playing'
-                };
-                return data;
-            },
-
-            generateData: function() {
-                var data = [];
-                for (var i=0; i<5; i++) {
-                    data.push({
-                        uri: "spotify:track:7skutlFh5m9qOpfgZMSenH",
-                        artist: "Sigur Rós",
-                        title: "Valtari",
-                        startTime: '0:00',
-                        startEvent: 'track-changed',
-                        endTime: '3:54',
-                        endEvent: 'track-paused',
-                        image:  'elements/spotify-player/images/3a0f72f604b4f7bcb06fad0f0ab8e00ae6623dd7.jpg'
-                    });
-                }
-                return data;
-            }
+            spotify: null
         });
     </script>
 

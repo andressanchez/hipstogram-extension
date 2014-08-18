@@ -32,6 +32,33 @@ document.addEventListener('polymer-ready', function()
     document.querySelector('#about-tab').onclick = showAboutToast;
 });
 
+/**
+ *
+ */
+function playPauseTrack()
+{
+    chrome.extension.getBackgroundPage().playPauseTrack();
+}
+
+/**
+ *
+ */
+function previousTrack()
+{
+    chrome.extension.getBackgroundPage().previousTrack();
+}
+
+/**
+ *
+ */
+function nextTrack()
+{
+    chrome.extension.getBackgroundPage().nextTrack();
+}
+
+/**
+ *
+ */
 function showAboutToast()
 {
     document.querySelector('paper-toast').show();

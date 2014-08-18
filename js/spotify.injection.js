@@ -1,5 +1,14 @@
 /**
  *
+ */
+if (!String.prototype.contains) {
+    String.prototype.contains = function(s, i) {
+        return this.indexOf(s, i) != -1;
+    }
+}
+
+/**
+ *
  * @param action
  * @param value
  */
@@ -11,52 +20,60 @@ function sendMessageToExtension(action, value)
     });
 }
 
+/**
+ *
+ * @type {HTMLElement}
+ */
 var player = document.querySelector("#app-player").contentDocument.body;
 
 /**
  *
  * @param e
  */
-var loadTrackInfo = function (e)
+var sendUpdate = function (e)
 {
-    // Artwork
-    sendMessageToExtension("track-artwork", player.querySelector(".sp-image-img").style.background.split("(")[1].split(")")[0]);
+    var spotifyObject = createSpotifyObject();
 
-    // Track Name
-    sendMessageToExtension("track-name", player.querySelector("#track-name > a").text);
+    // The event will be triggered before the status is changed
+    // Thus, we change it!
+    if (e != null && e.type == "click") spotifyObject.player.status = (spotifyObject.player.status == "playing" ? "pause" : "playing");
 
-    // Track Artists
-    var artist = player.querySelectorAll("#track-artist > a");
-    var s = ""; for (var i=0; i<artist.length; i++) { s += artist[i].text;if (i < artist.length - 1) s += ", " };
-    sendMessageToExtension("track-artist", s);
-
-    // Current Time
-    sendMessageToExtension("track-current", player.querySelector("#track-current").innerHTML);
-
-    // Track Length
-    sendMessageToExtension("track-length", player.querySelector("#track-length").innerHTML);
+    sendMessageToExtension("spotify-update", spotifyObject);
 };
 
 /**
- *
- * @param e
+ * Create a new Spotify Object from extracting the current
+ * information from player.
+ * @returns {{JSON}} Spotify Object
  */
-var updateTrackInfo = function (e)
+var createSpotifyObject = function()
 {
-    if (e.target.querySelector(".sp-image-img") != null)
-        sendMessageToExtension("track-artwork", e.target.querySelector(".sp-image-img").style.background.split("(")[1].split(")")[0]);
-    else if (e.target.id == "track-current" && e.target.innerHTML != "")
-       sendMessageToExtension("track-current", e.target.innerHTML);
-    else if (e.target.id == "track-length" && e.target.innerHTML != "")
-        sendMessageToExtension("track-length", e.target.innerHTML);
-    else if (e.target.id == "track-name" && e.target.innerHTML != "")
-        sendMessageToExtension("track-name", e.target.querySelector("a").text);
-    else if (e.target.id == "track-artist")
-    {
-        var artist = e.target.querySelectorAll("a");
-        var s = ""; for (var i=0; i<artist.length; i++) { s += artist[i].text;if (i < artist.length - 1) s += ", " };
-        sendMessageToExtension("track-artist", s);
-    }
+    var spotify = { track: {}, player: {}};
+
+    // Artwork
+    spotify.track.artwork = player.querySelector(".sp-image-img").style.background.split("(")[1].split(")")[0];
+
+    // Title
+    spotify.track.title = player.querySelector("#track-name > a").text;
+
+    // Extract artists
+    var artist = player.querySelectorAll("#track-artist > a");
+    var s = ""; for (var i=0; i<artist.length; i++) { s += artist[i].text;if (i < artist.length - 1) s += ", " };
+    spotify.track.artist = s;
+
+    // Current Time
+    spotify.track.time = player.querySelector("#track-current").innerHTML;
+
+    // Track Length
+    spotify.track.length = player.querySelector("#track-length").innerHTML;
+
+    // URI
+    spotify.track.uri = player.querySelector("#track-add").getAttribute("data-uri");
+
+    // Update player status
+    spotify.player.status = player.querySelector("#play-pause").className.contains("playing") ? "playing" : "pause";
+
+    return spotify;
 };
 
 /**
@@ -66,5 +83,6 @@ var updateTrackInfo = function (e)
  * 2. After that, we add a new listener to be up-to-date of any change.
  */
 
-loadTrackInfo();
-player.addEventListener("DOMSubtreeModified", updateTrackInfo, false);
+sendUpdate();
+player.addEventListener("DOMSubtreeModified", sendUpdate, false);
+player.addEventListener("click", sendUpdate, false);

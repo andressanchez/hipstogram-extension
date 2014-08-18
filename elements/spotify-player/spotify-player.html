@@ -36,12 +36,12 @@
 
             <div id="controls">
                 <div id="playback" horizontal layout center center-justified>
-                    <button id="previous"><i class="fa fa-step-backward fa-2x"></i></button>
-                    <button id="play-pause">
-                        <i class="fa fa-play fa-2x" hidden?="{{spotify.player.status == 'playing'}}"></i>
-                        <i class="fa fa-pause fa-2x" style="margin-left: -6px; font-size: 20px;" hidden?="{{spotify.player.status == 'paused'}}"></i>
+                    <button id="previous" on-click="{{previousAction}}"><i class="fa fa-step-backward fa-2x"></i></button>
+                    <button id="play-pause" on-click="{{playAction}}">
+                        <i class="fa fa-play fa-2x"></i>
+                        <i class="fa fa-pause fa-2x" style="margin-left: -6px; font-size: 20px;"></i>
                     </button>
-                    <button id="next"><i class="fa fa-step-forward fa-2x"></i></button>
+                    <button id="next" on-click="{{nextAction}}"><i class="fa fa-step-forward fa-2x"></i></button>
                 </div>
             </div>
 
@@ -55,7 +55,8 @@
 
             observe: {
                 'spotify.track.time': 'updateProgress',
-                'spotify.track.length': 'updateProgress'
+                'spotify.track.length': 'updateProgress',
+                'spotify.player.status': 'updateStatus'
             },
 
             updateProgress: function(oldValue, newValue)
@@ -67,6 +68,32 @@
 
                 if (timeSeconds == 0) { this.$.progress.value = 0; this.$.progress.max = 1; }
                 else { this.$.progress.value = timeSeconds; this.$.progress.max = lengthSeconds; }
+            },
+
+            updateStatus: function (oldValue, newValue)
+            {
+                if (newValue == 'playing') this.shadowRoot.querySelector("#play-pause > i.fa-play").hidden = true;
+                else this.shadowRoot.querySelector("#play-pause > i.fa-play").hidden = false;
+                if (newValue == 'pause') this.shadowRoot.querySelector("#play-pause > i.fa-pause").hidden = true;
+                else this.shadowRoot.querySelector("#play-pause > i.fa-pause").hidden = false;
+            },
+
+            playAction: function(event, detail, sender)
+            {
+                playPauseTrack(); // TODO: Change call to global function!
+                console.log("playAction!");
+            },
+
+            previousAction: function(event, detail, sender)
+            {
+                previousTrack(); // TODO: Change call to global function!
+                console.log("previousTrack!");
+            },
+
+            nextAction: function(event, detail, sender)
+            {
+                nextTrack(); // TODO: Change call to global function!
+                console.log("nextAction!");
             }
         });
     </script>
