@@ -25,7 +25,7 @@ A Spotify Player which graphically represents a Spotify Object
         <link href="spotify-player.css" rel="stylesheet">
 
         <!-- Wrapper -->
-        <div id="now-playing" vertical layout>
+        <div id="now-playing" vertical layout hidden?="{{spotify.tabId == null}}">
 
             <!-- Cover -->
             <div id="cover">
@@ -65,6 +65,10 @@ A Spotify Player which graphically represents a Spotify Object
 
         </div>
 
+        <div id="message" vertical layout center center-justified hidden?="{{spotify.tabId != null}}">
+            <h3>You haven't opened Spotify Play.</h3>
+            <a class="btn" on-click="{{openSpotifyPlayAction}}"><span>OPEN SPOTIFY PLAY</span></a>
+        </div>
     </template>
 
     <script>
@@ -141,6 +145,15 @@ A Spotify Player which graphically represents a Spotify Object
             {
                 nextTrack(); // TODO: Change call to global function!
                 console.log("nextAction!");
+            },
+
+            /**
+             * Open a new tab with Spotify Play
+             */
+            openSpotifyPlayAction: function(event, detail, sender)
+            {
+                openSpotifyPlay(); // TODO: Change call to global function!
+                console.log("openSpotifyPlay!");
             }
         });
     </script>

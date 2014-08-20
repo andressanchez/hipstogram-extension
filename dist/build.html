@@ -2628,10 +2628,45 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     text-align: center;
 }
 
+#message {
+    width: 100%;
+    height: 100%;
+}
+
+#message h3 {
+    font-family: 'proxima_nova', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 100;
+    color: #dfe0e6;
+}
+
+#message .btn {
+    border: 1px solid #dfe0e6;
+    padding: 5px 15px;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    text-decoration: none;
+}
+
+#message .btn:hover {
+    border: 1px solid #ffffff;
+}
+
+#message .btn span {
+    color: #dfe0e6;
+    font-weight: bold;
+}
+
+#message .btn span:hover {
+    color: #ffffff;
+}
+
 </style>
 
         <!-- Wrapper -->
-        <div id="now-playing" vertical="" layout="">
+        <div id="now-playing" vertical="" layout="" hidden?="{{spotify.tabId == null}}">
 
             <!-- Cover -->
             <div id="cover">
@@ -2671,6 +2706,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         </div>
 
+        <div id="message" vertical="" layout="" center="" center-justified="" hidden?="{{spotify.tabId != null}}">
+            <h3>You haven&apos;t opened Spotify Play.</h3>
+            <a class="btn" on-click="{{openSpotifyPlayAction}}"><span>OPEN SPOTIFY PLAY</span></a>
+        </div>
     </template>
 
     
@@ -2848,7 +2887,7 @@ core-list /deep/ #viewport {
         <div id="wrap">
 
             <!-- Upcoming Event (if there is one) -->
-            <div hidden?="{{spotify.events.upcoming == null}}">
+            <div hidden?="{{spotify.events.upcoming.uri == null}}">
                 <span class="header-title">Upcoming Event</span>
                 <div class="upcoming {{ {selected: selected} | tokenList }}">
                     <div class="message" style="background-image: url({{spotify.events.upcoming.cover}});">
@@ -2860,7 +2899,7 @@ core-list /deep/ #viewport {
             </div>
 
             <!-- In case, there is none -->
-            <div hidden?="{{spotify.events.upcoming != null}}">
+            <div hidden?="{{spotify.events.upcoming.uri != null}}">
             <div class="empty">
                 Open <strong>Spotify Play</strong> to generate new events.
             </div>

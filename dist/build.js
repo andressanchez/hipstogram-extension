@@ -3312,6 +3312,15 @@ Polymer('core-style', {
             {
                 nextTrack(); // TODO: Change call to global function!
                 console.log("nextAction!");
+            },
+
+            /**
+             * Open a new tab with Spotify Play
+             */
+            openSpotifyPlayAction: function(event, detail, sender)
+            {
+                openSpotifyPlay(); // TODO: Change call to global function!
+                console.log("openSpotifyPlay!");
             }
         });
     ;

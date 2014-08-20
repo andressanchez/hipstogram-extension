@@ -2,7 +2,7 @@
     "manifest_version": 2,
 
     "name": "Hipstogram for Spotify",
-    "description": "Use this extension to know your listening behavior when you use Spotify!",
+    "description": "Use this extension to know more about your use of Spotify!",
     "version": "0.1",
 
     "permissions": [
