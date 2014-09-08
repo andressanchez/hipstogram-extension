@@ -1,3 +1,18 @@
+/*
+ * Copyright (c) 2014 Andrés Sánchez Pascual
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not
+ * use this file except in compliance with the License. You may obtain a copy of
+ * the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ */
+
 /**
  * Spotify Object
  */
@@ -26,7 +41,8 @@ var spotify =
             artist: "Unknown",
             cover: null
         },
-        pending: []
+        pending: [],
+        acknowledged: []
     },
     tabId: null
 };
@@ -65,7 +81,6 @@ function inject(tab)
 {
     spotify.tabId = tab.id;
     console.log("Injecting JS in " + tab.url + "!");
-    chrome.tabs.executeScript(spotify.tabId, {file: "js/utils.js"});
     chrome.tabs.executeScript(spotify.tabId, {file: "js/spotify/injection.js"});
     console.log("Injection completed!");
 }
@@ -146,7 +161,8 @@ function eventHandler(newValue)
         spotify.events.upcoming.cover = newValue.track.cover;
         spotify.events.upcoming.title = newValue.track.title;
         spotify.events.upcoming.artist = newValue.track.artist;
-        spotify.events.upcoming.uri = newValue.track.uri;
+        if (newValue.track.uri.split(":").length == 3)
+            spotify.events.upcoming.uri = newValue.track.uri.split(":")[2];
     }
     // If the user has seek a specific part of the track
     else if (timeFromLatestUpdate > 2 && newValue.track.time != "0:00")
@@ -161,7 +177,8 @@ function eventHandler(newValue)
         spotify.events.upcoming.cover = newValue.track.cover;
         spotify.events.upcoming.title = newValue.track.title;
         spotify.events.upcoming.artist = newValue.track.artist;
-        spotify.events.upcoming.uri = newValue.track.uri;
+        if (newValue.track.uri.split(":").length == 3)
+            spotify.events.upcoming.uri = newValue.track.uri.split(":")[2];
     }
 }
 
@@ -178,11 +195,15 @@ function newEventHandle(newValue, isSeek)
     else if (isSeek) spotify.events.upcoming.endEvent = 'track-seek';
     else spotify.events.upcoming.endEvent = 'track-changed';
 
+    // Apparently, there is a case in which endTime is empty
+    if (spotify.events.upcoming.endTime == null || spotify.events.upcoming.endTime == "") spotify.events.upcoming.endTime = "0:00";
+
     // Just, if it is not the initial event
     if (spotify.events.upcoming.startTime != spotify.events.upcoming.endTime && (spotify.events.upcoming.uri != null || isSeek))
     {
         printEvent();
         spotify.events.pending.unshift(spotify.events.upcoming);
+        sendEvent(spotify.events.upcoming);
     }
 
     // Create an upcoming event with the reason because it was created
@@ -204,6 +225,34 @@ function newEventHandle(newValue, isSeek)
             endEvent: "track-playing"
         };
     }
+}
+
+/**
+ * Send a new event to the backend
+ * @param event Event to be sent
+ */
+function sendEvent(event)
+{
+    var xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = (function(e)
+    {
+        return function()
+        {
+            if (xmlhttp.readyState==4 && xmlhttp.status==200)
+            {
+                var index = spotify.events.pending.indexOf(e);
+                if (index > -1) {
+                    spotify.events.pending.splice(index, 1);
+                    spotify.events.acknowledged.unshift(e);
+                }
+            }
+        }
+    })(event);
+
+    xmlhttp.open("POST","http://api.hipstogram.io:8081/events",true);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send("content=[" + JSON.stringify(event) + "]");
 }
 
 /**

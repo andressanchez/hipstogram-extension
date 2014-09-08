@@ -1,3 +1,18 @@
+<!--
+    Copyright (c) 2014 Andrés Sánchez Pascual
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy of
+    the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+    License for the specific language governing permissions and limitations under
+    the License.
+-->
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -1486,6 +1501,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </polymer-element>
 </div>
     <div hidden><!--
+    Copyright (c) 2014 Andrés Sánchez Pascual
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy of
+    the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+    License for the specific language governing permissions and limitations under
+    the License.
+-->
+<!--
 A Spotify Player which graphically represents a Spotify Object
 
 ##### Example
@@ -2716,6 +2746,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 </polymer-element></div>
     <div hidden><!--
+    Copyright (c) 2014 Andrés Sánchez Pascual
+
+    Licensed under the Apache License, Version 2.0 (the "License"); you may not
+    use this file except in compliance with the License. You may obtain a copy of
+    the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+    WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+    License for the specific language governing permissions and limitations under
+    the License.
+-->
+
+<!--
 A list of Events, including an upcoming event, pending events and committed events
 
 ##### Example
@@ -2919,6 +2965,22 @@ core-list /deep/ #viewport {
                         </div>
                     </template>
                 </core-list>
+            </div>
+
+            <!-- Pending Events -->
+            <div hidden?="{{spotify.events.acknowledged == null || spotify.events.acknowledged.length == 0}}">
+            <span class="header-title">Acknowledged Events</span>
+            <core-list data="{{spotify.events.acknowledged}}" height="90">
+                <template>
+                    <div class="item {{ {selected: selected} | tokenList }}">
+                        <div class="message" style="background-image: url({{cover}});">
+                            <div class="title"><em><strong>{{title}}</strong> by {{artist}}</em></div>
+                            <div class="uri">{{uri}}</div>
+                            <div class="event">{{startTime}} [{{startEvent}}] &#x21D2; {{endTime}} [{{endEvent}}]</div>
+                        </div>
+                    </div>
+                </template>
+            </core-list>
             </div>
         </div>
 
